@@ -23,7 +23,7 @@ def load_pokemons(filepath):
     
     return pokemons
 
-
+              
 def main():
     pokemons = load_pokemons("pokemons.json")
     
