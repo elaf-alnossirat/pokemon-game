@@ -1,39 +1,51 @@
-import json
+import pygame
+import random
+import sys
 from pokemon import Pokemon
 from battle import Battle
+from main_menu import MainMenu
 
-def load_pokemons(filepath):
-    """Load Pokémon data from a JSON file."""
-    with open(filepath) as file:
-        data = json.load(file)
+class Game:
+    def __init__(self):
+        self.pokemons = self.load_pokemons("pokemons.json")
+        self.main_menu = MainMenu()
 
-    pokemons = []
-    for p in data["pokemon"]:
-        pokemons.append(Pokemon(
-            id=p["id"],
-            name=p["name"],
-            base_experience=p["base_experience"],
-            types=p["types"],
-            stats=p["stats"],
-            abilities=p["abilities"],
-            moves=p["moves"],
-            sprites=p["sprites"]
-        ))
-    
-    return pokemons
+    def load_pokemons(self, filepath):
+        """Load Pokémon data from a JSON file."""
+        import json
+        with open(filepath) as file:
+            data = json.load(file)
 
-def main():
-    pokemons = load_pokemons("pokemons.json")
+        pokemons = []
+        for p in data["pokemon"]:
+            pokemons.append(Pokemon(
+                id=p["id"],
+                name=p["name"],
+                base_experience=p["base_experience"],
+                types=p["types"],
+                stats=p["stats"],
+                abilities=p["abilities"],
+                moves=p["moves"],
+                sprites=p["sprites"]
+            ))
 
-    # Randomly choose an opponent's Pokémon
-    import random
-    opponent_pokemon = random.choice(pokemons)
+        return pokemons
 
-    # Create a battle instance (player will choose their Pokémon)
-    battle = Battle(available_pokemon=pokemons, opponent_pokemon=opponent_pokemon)
+    def start_battle(self):
+        opponent_pokemon = random.choice(self.pokemons)
+        battle = Battle(available_pokemon=self.pokemons, opponent_pokemon=opponent_pokemon)
+        battle.start_battle()
 
-    # Start the battle
-    battle.start_battle()
+    def run(self):
+        while True:
+            selected_option = self.main_menu.show()
+
+            if selected_option == "start":
+                self.start_battle()
+            elif selected_option == "quit":
+                pygame.quit()
+                sys.exit()
 
 if __name__ == "__main__":
-    main()
+    game = Game()
+    game.run()
