@@ -1,4 +1,3 @@
-# battle code without animation 
 import pygame
 import random
 from pokemon import Pokemon
@@ -70,44 +69,60 @@ class Battle:
         clock = pygame.time.Clock()
         selected_pokemon = None
 
+        # Layout for Pokémon selection (Grid)
+        grid_x = 50
+        grid_y = 100
+        image_size = 100
+        padding = 20
+        grid_cols = 3  # Number of columns of Pokémon
+        grid_rows = (len(available_pokemon) + grid_cols - 1) // grid_cols  # Calculate number of rows
+
         while selected_pokemon is None:
             screen.fill((255, 255, 255))
             title_text = font.render("Choose your Pokémon", True, (0, 0, 0))
             screen.blit(title_text, (300, 50))
-            
+
+            # Loop through the available Pokémon and display them as images
             for index, pokemon in enumerate(available_pokemon):
-                # Load the Pokémon image from the 'pokemon' folder
-                image_path = f"assets/pokemon/{pokemon.name.lower()}.png"  # Assuming the images are named after the Pokémon names
+                image_path = f"assets/pokemon/{pokemon.name.lower()}.png"
                 try:
                     pokemon_image = pygame.image.load(image_path)
-                    pokemon_image = pygame.transform.scale(pokemon_image, (100, 100))  # Scale to a reasonable size
+                    pokemon_image = pygame.transform.scale(pokemon_image, (image_size, image_size))
                 except FileNotFoundError:
                     pokemon_image = None
-                
-                # Draw the image on the screen
-                button_x = 150
-                button_y = 150 + index * 150
-                screen.blit(pokemon_image, (button_x, button_y)) if pokemon_image else None
+
+                # Calculate position in the grid
+                row = index // grid_cols
+                col = index % grid_cols
+                button_x = grid_x + col * (image_size + padding)
+                button_y = grid_y + row * (image_size + padding)
+
+                # Draw the Pokémon image on the screen
+                if pokemon_image:
+                    screen.blit(pokemon_image, (button_x, button_y))
 
                 # Check if the player is hovering over the image
                 mouse_x, mouse_y = pygame.mouse.get_pos()
-                is_hovered = button_x <= mouse_x <= button_x + 100 and button_y <= mouse_y <= button_y + 100
+                is_hovered = button_x <= mouse_x <= button_x + image_size and button_y <= mouse_y <= button_y + image_size
 
                 button_color = (0, 180, 0) if is_hovered else (0, 255, 0)
-                pygame.draw.rect(screen, button_color, (button_x, button_y, 100, 100), 3)
+                pygame.draw.rect(screen, button_color, (button_x, button_y, image_size, image_size), 3)
 
             pygame.display.flip()
             clock.tick(30)
             
+            # Handle events to select a Pokémon
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     return None
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     for index, pokemon in enumerate(available_pokemon):
-                        button_x = 150
-                        button_y = 150 + index * 150
-                        if button_x <= mouse_x <= button_x + 100 and button_y <= mouse_y <= button_y + 100:
+                        row = index // grid_cols
+                        col = index % grid_cols
+                        button_x = grid_x + col * (image_size + padding)
+                        button_y = grid_y + row * (image_size + padding)
+                        if button_x <= mouse_x <= button_x + image_size and button_y <= mouse_y <= button_y + image_size:
                             selected_pokemon = pokemon
                             break
 
@@ -160,4 +175,3 @@ class Battle:
         text = font.render(self.message, True, (255, 255, 255))
         screen.blit(text, (200, 300))
         pygame.display.flip()
-
