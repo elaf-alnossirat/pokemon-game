@@ -11,6 +11,7 @@ class Battle:
         self.message = ""
         self.message_duration = 3000
         self.message_start_time = 0
+        self.waiting_for_acknowledgment = False  # Flag to check if we are waiting for user acknowledgment
 
     def display_moves(self, screen):
         font = pygame.font.Font(None, 36)
@@ -44,14 +45,16 @@ class Battle:
             if self.opponent_pokemon.is_fainted():
                 self.message = f"{self.opponent_pokemon.name} fainted! You win!"
                 self.running = False
+                self.waiting_for_acknowledgment = True  # Wait for acknowledgment
                 return
     
     def opponent_turn(self, screen):
         if pygame.time.get_ticks() - self.message_start_time >= self.message_duration:
             pygame.time.delay(500)
             
+            # Let opponent choose a move and attack
             opponent_move = random.choice(self.opponent_pokemon.moves)
-            self.message = f"{self.opponent_pokemon.name} used {opponent_move}!"
+            self.message = f"{self.opponent_pokemon.name} used {opponent_move}!"  # Show opponent's attack message
             self.message_start_time = pygame.time.get_ticks()
             
             self.opponent_pokemon.attack(opponent_move, self.player_pokemon)
@@ -59,6 +62,7 @@ class Battle:
             if self.player_pokemon.is_fainted():
                 self.message = f"{self.player_pokemon.name} fainted! You lose!"
                 self.running = False
+                self.waiting_for_acknowledgment = True  # Wait for acknowledgment
             else:
                 self.player_turn = True
 
@@ -151,20 +155,24 @@ class Battle:
             pygame.display.flip()
             clock.tick(30)
             
-            if pygame.time.get_ticks() - self.message_start_time >= self.message_duration:
+            if pygame.time.get_ticks() - self.message_start_time >= self.message_duration and not self.waiting_for_acknowledgment:
                 self.message = ""
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                 
-                if event.type == pygame.MOUSEBUTTONDOWN and self.player_turn:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    for index, move in enumerate(self.player_pokemon.moves):
-                        button_x = 50 + (index % 2) * 310
-                        button_y = 450 + (index // 2) * 50
-                        if button_x <= mouse_x <= button_x + 300 and button_y <= mouse_y <= button_y + 40:
-                            self.handle_attack(screen, move)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    # If the battle is over or we're waiting for acknowledgment, allow user to continue
+                    if self.waiting_for_acknowledgment:
+                        self.running = False  # End the game or restart battle logic
+                    elif self.player_turn:
+                        mouse_x, mouse_y = pygame.mouse.get_pos()
+                        for index, move in enumerate(self.player_pokemon.moves):
+                            button_x = 50 + (index % 2) * 310
+                            button_y = 450 + (index // 2) * 50
+                            if button_x <= mouse_x <= button_x + 300 and button_y <= mouse_y <= button_y + 40:
+                                self.handle_attack(screen, move)
             
             if not self.player_turn:
                 self.opponent_turn(screen)
