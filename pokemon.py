@@ -1,7 +1,5 @@
-
 import pygame
 import random
-
 
 # Type Effectiveness Chart
 TYPE_EFFECTIVENESS = {
@@ -18,7 +16,7 @@ class Pokemon:
         self.base_experience = base_experience
         self.types = [t["type"] for t in types]
         self.stats = stats
-        self.hp = stats["hp"]  
+        self.hp = stats["hp"]
         self.max_hp = stats["hp"]
         self.attack_stat = stats["attack"]
         self.defense_stat = stats["defense"]
@@ -32,8 +30,11 @@ class Pokemon:
             self.back_image = pygame.image.load(sprites["back_default"])
         except FileNotFoundError:
             print(f"Error: Image files for {self.name} not found!")
-            self.front_image = pygame.Surface((100, 100))  
-            self.back_image = pygame.Surface((100, 100))  
+            # Fallback to placeholder images if not found
+            self.front_image = pygame.Surface((100, 100))  # Placeholder size
+            self.back_image = pygame.Surface((100, 100))  # Placeholder size
+            pygame.draw.rect(self.front_image, (200, 200, 200), self.front_image.get_rect())  # Placeholder color
+            pygame.draw.rect(self.back_image, (200, 200, 200), self.back_image.get_rect())  # Placeholder color
 
     def attack(self, move, target):
         """Perform an attack with type effectiveness and stat-based damage."""
@@ -46,12 +47,12 @@ class Pokemon:
 
         # Type effectiveness multiplier
         attacker_type = self.types[0]  # Assume first type for simplicity
-        defender_type = target.types[0]  
+        defender_type = target.types[0]
         type_multiplier = TYPE_EFFECTIVENESS.get(attacker_type, {}).get(defender_type, 1.0)
 
         # Final damage calculation
         damage = int(base_damage * type_multiplier)
-        target.hp = max(0, target.hp - damage)  
+        target.hp = max(0, target.hp - damage)
 
         # Display attack details
         print(f"{self.name} used {move}! It dealt {damage} damage to {target.name}.")
@@ -65,7 +66,7 @@ class Pokemon:
             print(f"{target.name} fainted!")
             return True
 
-        return False 
+        return False
 
     def is_fainted(self):
         """Check if the Pokémon has fainted."""
@@ -86,7 +87,7 @@ class Pokemon:
 
         # Draw background bar (red)
         pygame.draw.rect(screen, (255, 0, 0), (x, y, bar_width, bar_height))
-        
+
         # Draw foreground bar (green)
         pygame.draw.rect(screen, (0, 255, 0), (x, y, bar_width * hp_ratio, bar_height))
 
@@ -96,11 +97,11 @@ class Pokemon:
             screen.fill((255, 255, 255))  # Clear screen with white background
             offset_x = random.randint(-10, 10)
             offset_y = random.randint(-10, 10)
-            
+
             # Shake effect: Move sprite slightly left/right/up/down
             screen.blit(self.front_image if x_start > 400 else self.back_image,
                         (x_start + offset_x, y_start + offset_y))
-            
+
             pygame.display.flip()
             pygame.time.delay(100)
 
@@ -110,7 +111,7 @@ class Pokemon:
             # Red overlay effect
             red_overlay = pygame.Surface((self.front_image.get_width(), self.front_image.get_height()))
             red_overlay.fill((255, 0, 0))  # Red color
-            
+
             if x_start > 400:  # Opponent's Pokémon (front sprite)
                 screen.blit(self.front_image.copy(), (x_start, y_start))
                 screen.blit(red_overlay.set_alpha(128), (x_start, y_start))
@@ -120,8 +121,6 @@ class Pokemon:
 
             pygame.display.flip()
             pygame.time.delay(100)  # Pause briefly between flashes
-
-
 
 
 

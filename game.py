@@ -2,7 +2,6 @@ import json
 from pokemon import Pokemon
 from battle import Battle
 
-
 def load_pokemons(filepath):
     """Load Pokémon data from a JSON file."""
     with open(filepath) as file:
@@ -23,21 +22,18 @@ def load_pokemons(filepath):
     
     return pokemons
 
-              
 def main():
     pokemons = load_pokemons("pokemons.json")
-    
-    # Choose two Pokémon for battle (player vs opponent)
-    player_pokemon = pokemons[0]  # Bulbasaur (example)
-    opponent_pokemon = pokemons[3]  # Charmander (example)
 
-    print(f"You chose {player_pokemon.name}. Your opponent chose {opponent_pokemon.name}.")
-    
-    battle = Battle(player_pokemon=player_pokemon,
-                    opponent_pokemon=opponent_pokemon)
-    
+    # Randomly choose an opponent's Pokémon
+    import random
+    opponent_pokemon = random.choice(pokemons)
+
+    # Create a battle instance (player will choose their Pokémon)
+    battle = Battle(available_pokemon=pokemons, opponent_pokemon=opponent_pokemon)
+
+    # Start the battle
     battle.start_battle()
-
 
 if __name__ == "__main__":
     main()

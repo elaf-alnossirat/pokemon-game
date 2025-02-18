@@ -1,16 +1,17 @@
+# battle code without animation 
 import pygame
 import random
 from pokemon import Pokemon
 
 class Battle:
-    def __init__(self, player_pokemon, opponent_pokemon):
-        self.player_pokemon = player_pokemon
+    def __init__(self, available_pokemon, opponent_pokemon):
+        self.player_pokemon = self.choose_pokemon(available_pokemon)
         self.opponent_pokemon = opponent_pokemon
         self.running = True
         self.player_turn = True
         self.message = ""
-        self.message_duration = 3000  # Duration to display message
-        self.message_start_time = 0  # When to start showing message
+        self.message_duration = 3000
+        self.message_start_time = 0
 
     def display_moves(self, screen):
         font = pygame.font.Font(None, 36)
@@ -36,10 +37,8 @@ class Battle:
     def handle_attack(self, screen, move):
         if self.player_turn:
             self.message = f"{self.player_pokemon.name} used {move}!"
-            self.message_start_time = pygame.time.get_ticks()  # Record the time when the message started
+            self.message_start_time = pygame.time.get_ticks()
             
-            # Animate the player's attack
-            self.player_pokemon.animate_attack(screen, 50, 300)
             self.player_pokemon.attack(move, self.opponent_pokemon)
             self.player_turn = False
 
@@ -50,19 +49,69 @@ class Battle:
     
     def opponent_turn(self, screen):
         if pygame.time.get_ticks() - self.message_start_time >= self.message_duration:
+            pygame.time.delay(500)
+            
             opponent_move = random.choice(self.opponent_pokemon.moves)
             self.message = f"{self.opponent_pokemon.name} used {opponent_move}!"
-            self.message_start_time = pygame.time.get_ticks()  # Record time for opponent's message
+            self.message_start_time = pygame.time.get_ticks()
             
-            # Animate the opponent's attack
-            self.opponent_pokemon.animate_attack(screen, 500, 100)
             self.opponent_pokemon.attack(opponent_move, self.player_pokemon)
 
             if self.player_pokemon.is_fainted():
                 self.message = f"{self.player_pokemon.name} fainted! You lose!"
                 self.running = False
             else:
-                self.player_turn = True  # Switch back to player's turn
+                self.player_turn = True
+
+    def choose_pokemon(self, available_pokemon):
+        pygame.init()
+        screen = pygame.display.set_mode((800, 600))
+        font = pygame.font.Font(None, 36)
+        clock = pygame.time.Clock()
+        selected_pokemon = None
+
+        while selected_pokemon is None:
+            screen.fill((255, 255, 255))
+            title_text = font.render("Choose your Pokémon", True, (0, 0, 0))
+            screen.blit(title_text, (300, 50))
+            
+            for index, pokemon in enumerate(available_pokemon):
+                # Load the Pokémon image from the 'pokemon' folder
+                image_path = f"assets/pokemon/{pokemon.name.lower()}.png"  # Assuming the images are named after the Pokémon names
+                try:
+                    pokemon_image = pygame.image.load(image_path)
+                    pokemon_image = pygame.transform.scale(pokemon_image, (100, 100))  # Scale to a reasonable size
+                except FileNotFoundError:
+                    pokemon_image = None
+                
+                # Draw the image on the screen
+                button_x = 150
+                button_y = 150 + index * 150
+                screen.blit(pokemon_image, (button_x, button_y)) if pokemon_image else None
+
+                # Check if the player is hovering over the image
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                is_hovered = button_x <= mouse_x <= button_x + 100 and button_y <= mouse_y <= button_y + 100
+
+                button_color = (0, 180, 0) if is_hovered else (0, 255, 0)
+                pygame.draw.rect(screen, button_color, (button_x, button_y, 100, 100), 3)
+
+            pygame.display.flip()
+            clock.tick(30)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return None
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for index, pokemon in enumerate(available_pokemon):
+                        button_x = 150
+                        button_y = 150 + index * 150
+                        if button_x <= mouse_x <= button_x + 100 and button_y <= mouse_y <= button_y + 100:
+                            selected_pokemon = pokemon
+                            break
+
+        return selected_pokemon
 
     def start_battle(self):
         pygame.init()
@@ -72,7 +121,6 @@ class Battle:
         clock = pygame.time.Clock()
         
         while self.running:
-            # Draw the background and Pokémon images
             screen.blit(background_image, (0, 0))
             self.player_pokemon.draw(screen, x=50, y=300, is_player=True)
             self.opponent_pokemon.draw(screen, x=500, y=100, is_player=False)
@@ -80,7 +128,6 @@ class Battle:
             self.opponent_pokemon.draw_hp_bar(screen, x=500, y=50)
             self.display_moves(screen)
             
-            # Display message (win/loss or action)
             message_box = pygame.Rect(50, 400, 700, 40)
             pygame.draw.rect(screen, (255, 255, 255), message_box)
             message_text = font.render(self.message, True, (0, 0, 0))
@@ -89,9 +136,8 @@ class Battle:
             pygame.display.flip()
             clock.tick(30)
             
-            # Check if the message time is over and clear it if needed
             if pygame.time.get_ticks() - self.message_start_time >= self.message_duration:
-                self.message = ""  # Clear message after the duration
+                self.message = ""
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -105,14 +151,13 @@ class Battle:
                         if button_x <= mouse_x <= button_x + 300 and button_y <= mouse_y <= button_y + 40:
                             self.handle_attack(screen, move)
             
-            # Opponent's turn if it's not the player's turn
             if not self.player_turn:
                 self.opponent_turn(screen)
-
+    
     def display_end_screen(self, screen):
-        """Show the final result of the battle before quitting."""
-        screen.fill((0, 0, 0))  # Black background
+        screen.fill((0, 0, 0))
         font = pygame.font.Font(None, 48)
         text = font.render(self.message, True, (255, 255, 255))
         screen.blit(text, (200, 300))
         pygame.display.flip()
+
