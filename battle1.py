@@ -30,43 +30,117 @@ class Battle:
                 pygame.draw.rect(flash_surface, (255, 0, 0, flash_alpha), (0, 0, size[0], size[1]))
                 screen.blit(flash_surface, (x, y))
 
-    def draw_neon_button(self, screen, x, y, width, height, text, font, is_hovered=False):
-        neon_color = (0, 255, 0)  # Neon Green for the button
-        neon_hover_color = (0, 255, 255)  # Neon Blue when hovered
-        glow_color = (0, 255, 255)  # Glow color on hover
+    # def draw_neon_button(self, screen, x, y, width, height, text, font, is_hovered=False):
+    #     neon_color = (0, 255, 0)  # Neon Green for the button
+    #     neon_hover_color = (0, 255, 255)  # Neon Blue when hovered
+    #     glow_color = (0, 255, 255)  # Glow color on hover
 
-        if is_hovered:
-            pygame.draw.rect(screen, glow_color, (x - 5, y - 5, width + 10, height + 10), border_radius=20)  # Glow effect
-        pygame.draw.rect(screen, neon_hover_color if is_hovered else neon_color, 
-                         (x, y, width, height), border_radius=20)
+    #     if is_hovered:
+    #         pygame.draw.rect(screen, glow_color, (x - 5, y - 5, width + 10, height + 10), border_radius=20)  # Glow effect
+    #     pygame.draw.rect(screen, neon_hover_color if is_hovered else neon_color, 
+    #                      (x, y, width, height), border_radius=20)
 
-        text_surface = font.render(text, True, (0, 0, 0))
-        text_rect = text_surface.get_rect(center=(x + width // 2, y + height // 2))
-        screen.blit(text_surface, text_rect)
+    #     text_surface = font.render(text, True, (0, 0, 0))
+    #     text_rect = text_surface.get_rect(center=(x + width // 2, y + height // 2))
+    #     screen.blit(text_surface, text_rect)
 
     def display_moves(self, screen):
-        font = pygame.font.Font(None, 36)
-        move_box_x = 50
-        move_box_y = 100
-        button_width = 220
-        button_height = 40
-        button_spacing = 10
+        # Modern UI font - try to load custom font with fallback
+        try:
+            font = pygame.font.Font("assets/fonts/Exo2-Medium.ttf", 28)
+        except FileNotFoundError:
+            font = pygame.font.SysFont("arial", 28)
         
+        # Move button area at bottom of screen
+        move_area_rect = pygame.Rect(50, 450, 700, 120)
+        # Semi-transparent dark background panel
+        move_panel = pygame.Surface((move_area_rect.width, move_area_rect.height), pygame.SRCALPHA)
+        move_panel.fill((20, 20, 40, 180))  # Dark blue with alpha
+        screen.blit(move_panel, move_area_rect)
+        
+        # Draw "MOVES" header
+        header_font = pygame.font.Font(None, 24)
+        header_text = header_font.render("CHOOSE A MOVE", True, (180, 180, 255))
+        screen.blit(header_text, (move_area_rect.centerx - header_text.get_width()//2, move_area_rect.y + 10))
+        
+        # Button dimensions and positioning
+        button_width = 320
+        button_height = 60
+        button_spacing = 20
+        buttons_start_y = move_area_rect.y + 35
+        
+        # Draw each move button in a 2x2 grid
         for index, move in enumerate(self.player_pokemon.moves):
-            button_x = move_box_x + (index % 2) * (button_width + button_spacing)
-            button_y = move_box_y + (index // 2) * (button_height + button_spacing)
+            button_x = move_area_rect.x + 20 + (index % 2) * (button_width + button_spacing)
+            button_y = buttons_start_y + (index // 2) * (button_height + 5)
             
+            # Check if button is being hovered
             mouse_x, mouse_y = pygame.mouse.get_pos()
             is_hovered = button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height
             
             self.draw_neon_button(screen, button_x, button_y, button_width, button_height, move.capitalize(), font, is_hovered)
 
+    def draw_neon_button(self, screen, x, y, width, height, text, font, is_hovered=False):
+        # Modern neon button styles
+        if is_hovered:
+            # Outer glow for hover effect
+            for i in range(3, 0, -1):
+                glow_alpha = 100 - i * 20
+                glow_surf = pygame.Surface((width + i*6, height + i*6), pygame.SRCALPHA)
+                glow_color = (0, 255, 255, glow_alpha)  # Cyan glow with alpha
+                pygame.draw.rect(glow_surf, glow_color, 
+                                (0, 0, width + i*6, height + i*6), 
+                                border_radius=15)
+                screen.blit(glow_surf, (x - i*3, y - i*3))
+            
+            # Button background - brighter when hovered
+            button_color = (30, 40, 120)
+            border_color = (0, 200, 255)
+        else:
+            # Normal button state
+            button_color = (20, 30, 80)
+            border_color = (0, 150, 200)
+        
+        # Main button background
+        pygame.draw.rect(screen, button_color, (x, y, width, height), border_radius=15)
+        
+        # Button border
+        pygame.draw.rect(screen, border_color, (x, y, width, height), 
+                        width=2, border_radius=15)
+        
+        # Button shine/highlight effect (top part lighter)
+        highlight_rect = pygame.Rect(x+2, y+2, width-4, (height-4)//3)
+        highlight_surf = pygame.Surface((highlight_rect.width, highlight_rect.height), pygame.SRCALPHA)
+        highlight_color = (255, 255, 255, 30)
+        pygame.draw.rect(highlight_surf, highlight_color, 
+                        (0, 0, highlight_rect.width, highlight_rect.height),
+                        border_radius=10)
+        screen.blit(highlight_surf, highlight_rect)
+        
+        # Button text with shadow effect
+        text_shadow = font.render(text, True, (0, 0, 0))
+        text_surface = font.render(text, True, (255, 255, 255))
+        
+        # Center the text
+        text_rect = text_surface.get_rect(center=(x + width // 2, y + height // 2))
+        shadow_rect = text_rect.copy()
+        shadow_rect.x += 2
+        shadow_rect.y += 2
+        
+        screen.blit(text_shadow, shadow_rect)
+        screen.blit(text_surface, text_rect)
+            
     def handle_attack(self, screen, move):
         if self.player_turn:
             self.message = f"{self.player_pokemon.name} used {move}!"
             self.message_start_time = pygame.time.get_ticks()
-            self.attack_animation = True
-            self.attack_animation_start = pygame.time.get_ticks()
+            
+            # Visual attack effect
+            flash_surface = pygame.Surface((800, 600), pygame.SRCALPHA)
+            flash_surface.fill((255, 255, 255, 100))
+            screen.blit(flash_surface, (0, 0))
+            pygame.display.flip()
+            pygame.time.delay(100)
             
             self.player_pokemon.attack(move, self.opponent_pokemon)
             self.player_turn = False
@@ -75,6 +149,7 @@ class Battle:
                 self.message = f"{self.opponent_pokemon.name} fainted! You win!"
                 self.battle_over = True
                 self.victor = "player"
+                # Initialize victory particles
                 self.initialize_particles()
                 return
 
@@ -340,44 +415,53 @@ class Battle:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if not self.battle_over and self.player_turn:
                         mouse_x, mouse_y = pygame.mouse.get_pos()
+                        # Updated button coordinates to match the new layout
+                        move_area_rect = pygame.Rect(50, 450, 700, 120)
+                        buttons_start_y = move_area_rect.y + 35
+                        button_width = 320
+                        button_height = 60
+                        button_spacing = 20
+                        
                         for index, move in enumerate(self.player_pokemon.moves):
-                            button_x = 50 + (index % 2) * 310
-                            button_y = 100 + (index // 2) * 50
-                            if button_x <= mouse_x <= button_x + 220 and button_y <= mouse_y <= button_y + 40:
+                            button_x = move_area_rect.x + 20 + (index % 2) * (button_width + button_spacing)
+                            button_y = buttons_start_y + (index // 2) * (button_height + 5)
+                            
+                            if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height:
                                 self.handle_attack(screen, move)
                     elif self.battle_over and self.result_displayed:
                         self.running = False
 
+            # Draw the game screen
             screen.blit(background_image, (0, 0))
 
-            # Draw player Pokémon with damage flash
             player_pokemon_image = pygame.image.load(f"assets/pokemon/{self.player_pokemon.name.lower()}.png")
             player_pokemon_image = pygame.transform.scale(player_pokemon_image, player_pokemon_size)
             screen.blit(player_pokemon_image, (50, 250))
-            self.draw_damage_flash(screen, self.player_pokemon, 50, 250, player_pokemon_size)
 
-            # Draw opponent Pokémon with damage flash
             opponent_pokemon_image = pygame.image.load(f"assets/pokemon/{self.opponent_pokemon.name.lower()}.png")
             opponent_pokemon_image = pygame.transform.scale(opponent_pokemon_image, opponent_pokemon_size)
             screen.blit(opponent_pokemon_image, (500, 100))
-            self.draw_damage_flash(screen, self.opponent_pokemon, 500, 100, opponent_pokemon_size)
 
-            # Draw enhanced HP bars
             self.player_pokemon.draw_hp_bar(screen, x=50, y=220)
             self.opponent_pokemon.draw_hp_bar(screen, x=500, y=50)
 
+            # Message box (moved up to make room for the move buttons)
+            message_box = pygame.Rect(50, 400, 700, 40)
+            pygame.draw.rect(screen, (0, 0, 0, 150), message_box, border_radius=10)  # Semi-transparent background
+            pygame.draw.rect(screen, (100, 100, 255), message_box, width=2, border_radius=10)  # Neon border
+            message_text = font.render(self.message, True, (255, 255, 255))
+            screen.blit(message_text, (60, 410))
+
+            # Only display moves if battle is ongoing
             if not self.battle_over:
                 self.display_moves(screen)
-
-            message_box = pygame.Rect(50, 400, 700, 40)
-            pygame.draw.rect(screen, (255, 255, 255), message_box)
-            message_text = font.render(self.message, True, (0, 0, 0))
-            screen.blit(message_text, (60, 410))
 
             pygame.display.flip()
             clock.tick(30)
 
+            # Display the result screen if battle is over and result hasn't been shown yet
             if self.battle_over and not self.result_displayed:
+                # Wait a moment to show the final message before showing result screen
                 pygame.time.delay(1500)
                 self.display_modern_result_screen(screen)
 
