@@ -4,6 +4,7 @@ import sys
 from pokemon import Pokemon
 from battle import Battle
 from main_menu import MainMenu
+from pokedex import main as show_pokedex  # Import the Pokédex function
 
 class Game:
     def __init__(self):
@@ -36,12 +37,17 @@ class Game:
         battle = Battle(available_pokemon=self.pokemons, opponent_pokemon=opponent_pokemon)
         battle.start_battle()
 
+    def show_pokedex(self):
+        show_pokedex()  # Call the Pokédex screen function
+
     def run(self):
         while True:
             selected_option = self.main_menu.show()
 
             if selected_option == "start":
                 self.start_battle()
+            elif selected_option == "pokedex":
+                self.show_pokedex()
             elif selected_option == "quit":
                 pygame.quit()
                 sys.exit()

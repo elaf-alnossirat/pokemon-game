@@ -1,0 +1,385 @@
+import pygame
+import random
+import math
+from pokemon import Pokemon
+
+class Battle:
+    def __init__(self, available_pokemon, opponent_pokemon):
+        self.player_pokemon = self.choose_pokemon(available_pokemon)
+        self.opponent_pokemon = opponent_pokemon
+        self.running = True
+        self.player_turn = True
+        self.message = ""
+        self.message_duration = 3000
+        self.message_start_time = 0
+        self.battle_over = False
+        self.victor = None
+        self.result_displayed = False
+        self.animation_progress = 0
+        self.animation_speed = 0.02
+        self.particles = []
+        self.damage_flash_duration = 200  # Duration of the damage flash effect
+
+    def draw_damage_flash(self, screen, pokemon, x, y, size):
+        if hasattr(pokemon, 'damage_flash_start'):
+            elapsed_time = pygame.time.get_ticks() - pokemon.damage_flash_start
+            if elapsed_time < self.damage_flash_duration:
+                # Create a semi-transparent red overlay for the flash effect
+                flash_surface = pygame.Surface(size, pygame.SRCALPHA)
+                flash_alpha = int(255 * (1 - elapsed_time / self.damage_flash_duration))
+                pygame.draw.rect(flash_surface, (255, 0, 0, flash_alpha), (0, 0, size[0], size[1]))
+                screen.blit(flash_surface, (x, y))
+
+    def draw_neon_button(self, screen, x, y, width, height, text, font, is_hovered=False):
+        neon_color = (0, 255, 0)  # Neon Green for the button
+        neon_hover_color = (0, 255, 255)  # Neon Blue when hovered
+        glow_color = (0, 255, 255)  # Glow color on hover
+
+        if is_hovered:
+            pygame.draw.rect(screen, glow_color, (x - 5, y - 5, width + 10, height + 10), border_radius=20)  # Glow effect
+        pygame.draw.rect(screen, neon_hover_color if is_hovered else neon_color, 
+                         (x, y, width, height), border_radius=20)
+
+        text_surface = font.render(text, True, (0, 0, 0))
+        text_rect = text_surface.get_rect(center=(x + width // 2, y + height // 2))
+        screen.blit(text_surface, text_rect)
+
+    def display_moves(self, screen):
+        font = pygame.font.Font(None, 36)
+        move_box_x = 50
+        move_box_y = 100
+        button_width = 220
+        button_height = 40
+        button_spacing = 10
+        
+        for index, move in enumerate(self.player_pokemon.moves):
+            button_x = move_box_x + (index % 2) * (button_width + button_spacing)
+            button_y = move_box_y + (index // 2) * (button_height + button_spacing)
+            
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            is_hovered = button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height
+            
+            self.draw_neon_button(screen, button_x, button_y, button_width, button_height, move.capitalize(), font, is_hovered)
+
+    def handle_attack(self, screen, move):
+        if self.player_turn:
+            self.message = f"{self.player_pokemon.name} used {move}!"
+            self.message_start_time = pygame.time.get_ticks()
+            self.attack_animation = True
+            self.attack_animation_start = pygame.time.get_ticks()
+            
+            self.player_pokemon.attack(move, self.opponent_pokemon)
+            self.player_turn = False
+
+            if self.opponent_pokemon.is_fainted():
+                self.message = f"{self.opponent_pokemon.name} fainted! You win!"
+                self.battle_over = True
+                self.victor = "player"
+                self.initialize_particles()
+                return
+
+    def opponent_turn(self, screen):
+        if pygame.time.get_ticks() - self.message_start_time >= self.message_duration:
+            pygame.time.delay(500)
+            
+            opponent_move = random.choice(self.opponent_pokemon.moves)
+            self.message = f"{self.opponent_pokemon.name} used {opponent_move}!"
+            self.message_start_time = pygame.time.get_ticks()
+            self.attack_animation = True
+            self.attack_animation_start = pygame.time.get_ticks()
+            
+            self.opponent_pokemon.attack(opponent_move, self.player_pokemon)
+
+            if self.player_pokemon.is_fainted():
+                self.message = f"{self.player_pokemon.name} fainted! You lose!"
+                self.battle_over = True
+                self.victor = "opponent"
+            else:
+                self.player_turn = True
+
+    def choose_pokemon(self, available_pokemon):
+        pygame.init()
+        screen = pygame.display.set_mode((800, 600))
+        font = pygame.font.Font(None, 36)
+        clock = pygame.time.Clock()
+        selected_pokemon = None
+
+        grid_x = 50
+        grid_y = 100
+        image_size = 100
+        padding = 20
+        grid_cols = 3
+        grid_rows = (len(available_pokemon) + grid_cols - 1) // grid_cols
+
+        while selected_pokemon is None:
+            screen.fill((255, 255, 255))
+            title_text = font.render("Choose your Pokémon", True, (0, 0, 0))
+            screen.blit(title_text, (300, 50))
+
+            for index, pokemon in enumerate(available_pokemon):
+                image_path = f"assets/pokemon/{pokemon.name.lower()}.png"
+                try:
+                    pokemon_image = pygame.image.load(image_path)
+                    pokemon_image = pygame.transform.scale(pokemon_image, (image_size, image_size))
+                except FileNotFoundError:
+                    pokemon_image = None
+
+                row = index // grid_cols
+                col = index % grid_cols
+                button_x = grid_x + col * (image_size + padding)
+                button_y = grid_y + row * (image_size + padding)
+
+                if pokemon_image:
+                    screen.blit(pokemon_image, (button_x, button_y))
+
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                is_hovered = button_x <= mouse_x <= button_x + image_size and button_y <= mouse_y <= button_y + image_size
+
+                button_color = (0, 180, 0) if is_hovered else (0, 255, 0)
+                pygame.draw.rect(screen, button_color, (button_x, button_y, image_size, image_size), 3)
+
+            pygame.display.flip()
+            clock.tick(30)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return None
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for index, pokemon in enumerate(available_pokemon):
+                        row = index // grid_cols
+                        col = index % grid_cols
+                        button_x = grid_x + col * (image_size + padding)
+                        button_y = grid_y + row * (image_size + padding)
+                        if button_x <= mouse_x <= button_x + image_size and button_y <= mouse_y <= button_y + image_size:
+                            selected_pokemon = pokemon
+                            break
+
+        return selected_pokemon
+
+    def initialize_particles(self):
+        self.particles = []
+        if self.victor == "player":
+            for _ in range(100):
+                particle = {
+                    'x': random.randint(0, 800),
+                    'y': random.randint(-50, 0),
+                    'size': random.randint(5, 15),
+                    'speed': random.uniform(2, 6),
+                    'color': random.choice([
+                        (255, 215, 0),  # Gold
+                        (255, 255, 255),  # White
+                        (0, 255, 255),  # Cyan
+                        (255, 105, 180),  # Pink
+                    ])
+                }
+                self.particles.append(particle)
+
+    def update_particles(self):
+        for particle in self.particles[:]:
+            particle['y'] += particle['speed']
+            if particle['y'] > 600:
+                self.particles.remove(particle)
+            elif random.random() < 0.02:
+                self.particles.remove(particle)
+
+    def draw_particles(self, screen):
+        for particle in self.particles:
+            pygame.draw.circle(
+                screen,
+                particle['color'],
+                (int(particle['x']), int(particle['y'])),
+                particle['size']
+            )
+
+    def display_modern_result_screen(self, screen):
+        self.result_displayed = True
+        self.animation_progress = 0
+        
+        try:
+            font_title = pygame.font.Font("assets/fonts/Exo2-Bold.ttf", 72)
+            font_subtitle = pygame.font.Font("assets/fonts/Exo2-SemiBold.ttf", 36)
+            font_stats = pygame.font.Font("assets/fonts/Exo2-Medium.ttf", 24)
+            font_continue = pygame.font.Font("assets/fonts/Exo2-Regular.ttf", 20)
+        except FileNotFoundError:
+            font_title = pygame.font.SysFont("arial", 72, bold=True)
+            font_subtitle = pygame.font.SysFont("arial", 36, bold=True)
+            font_stats = pygame.font.SysFont("arial", 24)
+            font_continue = pygame.font.SysFont("arial", 20)
+        
+        clock = pygame.time.Clock()
+        
+        done = False
+        while not done:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and self.animation_progress >= 0.95:
+                    done = True
+                if event.type == pygame.KEYDOWN and self.animation_progress >= 0.95:
+                    done = True
+            
+            if self.animation_progress < 1.0:
+                self.animation_progress += self.animation_speed
+                self.animation_progress = min(1.0, self.animation_progress)
+            
+            screen.blit(pygame.image.load("assets/background/battle_background.jpg"), (0, 0))
+            overlay = pygame.Surface((800, 600), pygame.SRCALPHA)
+            overlay.fill((0, 0, 0, 150))
+            screen.blit(overlay, (0, 0))
+            
+            if self.victor == "player":
+                self.update_particles()
+                self.draw_particles(screen)
+            
+            card_height = int(400 * min(1, self.animation_progress * 3.33))
+            card_y = 300 - card_height // 2
+            
+            if self.victor == "player":
+                card_color = (0, 0, 60)
+                accent_color = (0, 191, 255)
+                text_color = (255, 215, 0)
+            else:
+                card_color = (60, 0, 0)
+                accent_color = (178, 34, 34)
+                text_color = (255, 99, 71)
+            
+            card_rect = pygame.Rect(150, card_y, 500, card_height)
+            pygame.draw.rect(screen, card_color, card_rect, border_radius=20)
+            
+            if self.animation_progress > 0.3:
+                border_progress = min(1, (self.animation_progress - 0.3) * 3.33)
+                border_width = int(5 * border_progress)
+                if border_width > 0:
+                    pygame.draw.rect(screen, accent_color, card_rect, width=border_width, border_radius=20)
+            
+            if self.animation_progress > 0.3:
+                title_opacity = min(255, int(255 * min(1, (self.animation_progress - 0.3) * 3.33)))
+                if self.victor == "player":
+                    title_surface = font_title.render("VICTORY!", True, text_color)
+                else:
+                    title_surface = font_title.render("DEFEAT", True, text_color)
+                
+                title_surface.set_alpha(title_opacity)
+                title_rect = title_surface.get_rect(center=(400, card_y + 70))
+                screen.blit(title_surface, title_rect)
+            
+            if self.animation_progress > 0.6:
+                stats_opacity = min(255, int(255 * min(1, (self.animation_progress - 0.6) * 5)))
+                
+                if self.victor == "player":
+                    subtitle = f"{self.player_pokemon.name} defeated {self.opponent_pokemon.name}!"
+                    stats1 = f"Your {self.player_pokemon.name} still has {self.player_pokemon.hp}/{self.player_pokemon.max_hp} HP"
+                    stats2 = f"Experience gained: {random.randint(50, 150)}"
+                else:
+                    subtitle = f"{self.opponent_pokemon.name} defeated {self.player_pokemon.name}!"
+                    stats1 = f"Opponent's {self.opponent_pokemon.name} has {self.opponent_pokemon.hp}/{self.opponent_pokemon.max_hp} HP left"
+                    stats2 = "Better luck next time!"
+                
+                subtitle_surface = font_subtitle.render(subtitle, True, (255, 255, 255))
+                subtitle_surface.set_alpha(stats_opacity)
+                subtitle_rect = subtitle_surface.get_rect(center=(400, card_y + 140))
+                screen.blit(subtitle_surface, subtitle_rect)
+                
+                stats1_surface = font_stats.render(stats1, True, (200, 200, 200))
+                stats1_surface.set_alpha(stats_opacity)
+                stats1_rect = stats1_surface.get_rect(center=(400, card_y + 200))
+                screen.blit(stats1_surface, stats1_rect)
+                
+                stats2_surface = font_stats.render(stats2, True, (200, 200, 200))
+                stats2_surface.set_alpha(stats_opacity)
+                stats2_rect = stats2_surface.get_rect(center=(400, card_y + 240))
+                screen.blit(stats2_surface, stats2_rect)
+            
+            if self.animation_progress > 0.8:
+                button_opacity = min(255, int(255 * min(1, (self.animation_progress - 0.8) * 5)))
+                
+                button_rect = pygame.Rect(300, card_y + 300, 200, 50)
+                button_color_with_alpha = list(accent_color)
+                button_color_with_alpha.append(button_opacity)
+                
+                button_surface = pygame.Surface((200, 50), pygame.SRCALPHA)
+                pygame.draw.rect(button_surface, button_color_with_alpha, pygame.Rect(0, 0, 200, 50), border_radius=25)
+                screen.blit(button_surface, button_rect)
+                
+                continue_text = font_continue.render("CONTINUE", True, (255, 255, 255))
+                continue_text.set_alpha(button_opacity)
+                continue_rect = continue_text.get_rect(center=button_rect.center)
+                screen.blit(continue_text, continue_rect)
+                
+                if self.animation_progress >= 1.0:
+                    pulse = (math.sin(pygame.time.get_ticks() * 0.005) + 1) * 0.5
+                    pulse_size = int(5 * pulse)
+                    if pulse_size > 0:
+                        pygame.draw.rect(screen, (255, 255, 255, 100), 
+                                        button_rect.inflate(pulse_size, pulse_size), 
+                                        width=2, border_radius=25)
+            
+            pygame.display.flip()
+            clock.tick(60)
+        
+        return
+
+    def start_battle(self):
+        pygame.init()
+        screen = pygame.display.set_mode((800, 600))
+        background_image = pygame.image.load("assets/background/battle_background.jpg")
+        font = pygame.font.Font(None, 36)
+        clock = pygame.time.Clock()
+
+        player_pokemon_size = (200, 200)
+        opponent_pokemon_size = (200, 200)
+        
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if not self.battle_over and self.player_turn:
+                        mouse_x, mouse_y = pygame.mouse.get_pos()
+                        for index, move in enumerate(self.player_pokemon.moves):
+                            button_x = 50 + (index % 2) * 310
+                            button_y = 100 + (index // 2) * 50
+                            if button_x <= mouse_x <= button_x + 220 and button_y <= mouse_y <= button_y + 40:
+                                self.handle_attack(screen, move)
+                    elif self.battle_over and self.result_displayed:
+                        self.running = False
+
+            screen.blit(background_image, (0, 0))
+
+            # Draw player Pokémon with damage flash
+            player_pokemon_image = pygame.image.load(f"assets/pokemon/{self.player_pokemon.name.lower()}.png")
+            player_pokemon_image = pygame.transform.scale(player_pokemon_image, player_pokemon_size)
+            screen.blit(player_pokemon_image, (50, 250))
+            self.draw_damage_flash(screen, self.player_pokemon, 50, 250, player_pokemon_size)
+
+            # Draw opponent Pokémon with damage flash
+            opponent_pokemon_image = pygame.image.load(f"assets/pokemon/{self.opponent_pokemon.name.lower()}.png")
+            opponent_pokemon_image = pygame.transform.scale(opponent_pokemon_image, opponent_pokemon_size)
+            screen.blit(opponent_pokemon_image, (500, 100))
+            self.draw_damage_flash(screen, self.opponent_pokemon, 500, 100, opponent_pokemon_size)
+
+            # Draw enhanced HP bars
+            self.player_pokemon.draw_hp_bar(screen, x=50, y=220)
+            self.opponent_pokemon.draw_hp_bar(screen, x=500, y=50)
+
+            if not self.battle_over:
+                self.display_moves(screen)
+
+            message_box = pygame.Rect(50, 400, 700, 40)
+            pygame.draw.rect(screen, (255, 255, 255), message_box)
+            message_text = font.render(self.message, True, (0, 0, 0))
+            screen.blit(message_text, (60, 410))
+
+            pygame.display.flip()
+            clock.tick(30)
+
+            if self.battle_over and not self.result_displayed:
+                pygame.time.delay(1500)
+                self.display_modern_result_screen(screen)
+
+            if not self.player_turn and not self.battle_over:
+                self.opponent_turn(screen)

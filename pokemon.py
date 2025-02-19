@@ -78,19 +78,51 @@ class Pokemon:
             screen.blit(self.back_image, (x, y))
         else:
             screen.blit(self.front_image, (x, y))
+    def draw_hp_bar(self, screen, x, y, width=200, height=20):
+            # Calculate the current HP percentage
+            hp_percentage = self.hp / self.max_hp
 
-    def draw_hp_bar(self, screen, x, y):
-        """Draw the HP bar of the Pokémon."""
-        bar_width = 200
-        bar_height = 20
-        hp_ratio = self.hp / self.max_hp
+            # Smoothly transition the displayed HP
+            if not hasattr(self, 'displayed_hp'):
+                self.displayed_hp = self.hp
+            else:
+                if self.displayed_hp > self.hp:
+                    self.displayed_hp -= max(1, (self.displayed_hp - self.hp) / 10)
+                elif self.displayed_hp < self.hp:
+                    self.displayed_hp += max(1, (self.hp - self.displayed_hp) / 10)
 
-        # Draw background bar (red)
-        pygame.draw.rect(screen, (255, 0, 0), (x, y, bar_width, bar_height))
+            displayed_hp_percentage = self.displayed_hp / self.max_hp
 
-        # Draw foreground bar (green)
-        pygame.draw.rect(screen, (0, 255, 0), (x, y, bar_width * hp_ratio, bar_height))
+            # Draw the background of the HP bar (empty part)
+            pygame.draw.rect(screen, (50, 50, 50), (x, y, width, height), border_radius=10)
 
+            # Draw the HP bar with a gradient
+            for i in range(int(displayed_hp_percentage * width)):
+                color = self.get_hp_bar_color(displayed_hp_percentage)
+                pygame.draw.rect(screen, color, (x + i, y, 1, height), border_radius=10)
+
+            # Add a glow effect around the HP bar
+            glow_surface = pygame.Surface((width, height), pygame.SRCALPHA)
+            pygame.draw.rect(glow_surface, (255, 255, 255, 50), (0, 0, width, height), border_radius=10)
+            screen.blit(glow_surface, (x - 2, y - 2))
+
+            # Display HP text overlay
+            font = pygame.font.Font(None, 18)
+            hp_text = font.render(f"{int(self.displayed_hp)}/{self.max_hp}", True, (255, 255, 255))
+            screen.blit(hp_text, (x + width // 2 - hp_text.get_width() // 2, y + height // 2 - hp_text.get_height() // 2))
+
+    def get_hp_bar_color(self, hp_percentage):
+            # Gradient from green to red based on HP percentage
+            if hp_percentage > 0.5:
+                return (int(255 * (1 - hp_percentage) * 2), 255, 0)  # Green to yellow
+            else:
+                return (255, int(255 * hp_percentage * 2), 0)  # Yellow to red
+
+    def take_damage(self, damage):
+            self.hp = max(0, self.hp - damage)
+            # Trigger a damage flash effect
+            self.damage_flash_start = pygame.time.get_ticks()
+            
     def animate_attack(self, screen, x_start, y_start):
         """Simple attack animation: shake or jump."""
         for _ in range(3):
