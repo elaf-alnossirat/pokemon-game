@@ -31,18 +31,17 @@ class MainMenu:
         start_icon = pygame.image.load("assets/start_icon.png")  # Path to the start icon
         exit_icon = pygame.image.load("assets/exit_icon.png")  # Path to the exit icon
 
-        # Resize the icons if necessary (optional, but will resize to fit)
-        start_icon = pygame.transform.scale(start_icon, (94, 94))  # Keep original size or scale as necessary
-        exit_icon = pygame.transform.scale(exit_icon, (94, 94))  # Keep original size or scale as necessary
+        # Resize the icons to 94x94
+        start_icon = pygame.transform.scale(start_icon, (94, 94))
+        exit_icon = pygame.transform.scale(exit_icon, (94, 94))
 
         # Button positions (right side of the screen)
         start_button_x = 650  # Move the buttons further right
         start_button_y = 200
-        button_radius = 60  # Radius of the circular button
+        button_radius = 47  # Half of 94 (the size of the icon)
 
         quit_button_x = 650  # Keep aligned to the right
         quit_button_y = 350  # Increase vertical space between buttons
-        quit_button_radius = 60  # Radius of the circular button
 
         while self.running:
             screen.blit(background_image, (0, 0))  # Draw background
