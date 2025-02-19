@@ -1,0 +1,1388 @@
+{
+    "pokemon": [
+      {
+        "id": 1,
+        "name": "bulbasaur",
+        "base_experience": 64,
+        "types": [
+          { "slot": 1, "type": "grass" },
+          { "slot": 2, "type": "poison" }
+        ],
+        "stats": {
+          "hp": 45,
+          "attack": 49,
+          "defense": 49,
+          "special_attack": 65,
+          "special_defense": 65,
+          "speed": 45
+        },
+        "abilities": [
+          { "name": "overgrow", "is_hidden": false },
+          { "name": "chlorophyll", "is_hidden": true }
+        ],
+        "moves": [
+          "tackle",
+          "growl",
+          "leech seed",
+          "vine whip"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/bulbasaur.png",
+          "back_default": "assets/pokemon/bulbasaur_back.png"
+        }
+      },
+      {
+        "id": 2,
+        "name": "ivysaur",
+        "base_experience": 142,
+        "types": [
+          { "slot": 1, "type": "grass" },
+          { "slot": 2, "type": "poison" }
+        ],
+        "stats": {
+          "hp": 60,
+          "attack": 62,
+          "defense": 63,
+          "special_attack": 80,
+          "special_defense": 80,
+          "speed": 60
+        },
+        "abilities": [
+          { "name": "overgrow", "is_hidden": false },
+          { "name": "chlorophyll", "is_hidden": true }
+        ],
+        "moves": [
+          "tackle",
+          "growl",
+          "leech seed",
+          "vine whip",
+          "razor leaf"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/ivysaur.png",
+          "back_default": "assets/pokemon/ivysaur_back.png"
+        }
+      },
+      {
+        "id": 3,
+        "name": "venusaur",
+        "base_experience": 236,
+        "types": [
+          { "slot": 1, "type": "grass" },
+          { "slot": 2, "type": "poison" }
+        ],
+        "stats": {
+          "hp": 80,
+          "attack": 82,
+          "defense": 83,
+          "special_attack": 100,
+          "special_defense": 100,
+          "speed": 80
+        },
+        "abilities": [
+          { "name": "overgrow", "is_hidden": false },
+          { "name": "chlorophyll", "is_hidden": true }
+        ],
+        "moves": [
+          "tackle",
+          "growl",
+          "leech seed",
+          "vine whip",
+          "solar beam"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/venusaur.png",
+          "back_default": "assets/pokemon/venusaur_back.png"
+        }
+      },
+      {
+        "id": 4,
+        "name": "charmander",
+        "base_experience": 62,
+        "types": [
+          { "slot": 1, "type": "fire" }
+        ],
+        "stats": {
+          "hp": 39,
+          "attack": 52,
+          "defense": 43,
+          "special_attack": 60,
+          "special_defense": 50,
+          "speed": 65
+        },
+        "abilities": [
+          { "name": "blaze", "is_hidden": false },
+          { "name": "solar-power", "is_hidden": true }
+        ],
+        "moves": [
+          "scratch",
+          "growl",
+          "ember",
+          "smokescreen"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/charmander.png",
+          "back_default": "assets/pokemon/charmander_back.png"
+        }
+      },
+      {
+        "id": 5,
+        "name": "charmeleon",
+        "base_experience": 142,
+        "types": [
+          { "slot": 1, "type": "fire" }
+        ],
+        "stats": {
+          "hp": 58,
+          "attack": 64,
+          "defense": 58,
+          "special_attack": 80,
+          "special_defense": 65,
+          "speed": 80
+        },
+        "abilities": [
+          { "name": "blaze", "is_hidden": false },
+          { "name": "solar-power", "is_hidden": true }
+        ],
+        "moves": [
+          "scratch",
+          "growl",
+          "ember",
+          "smokescreen",
+          "dragon rage"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/charmeleon.png",
+          "back_default": "assets/pokemon/charmeleon_back.png"
+        }
+      },
+      {
+        "id": 6,
+        "name": "charizard",
+        "base_experience": 240,
+        "types": [
+          { "slot": 1, "type": "fire" },
+          { "slot": 2, "type": "flying" }
+        ],
+        "stats": {
+          "hp": 78,
+          "attack": 84,
+          "defense": 78,
+          "special_attack": 109,
+          "special_defense": 85,
+          "speed": 100
+        },
+        "abilities": [
+          { "name": "blaze", "is_hidden": false },
+          { "name": "solar-power", "is_hidden": true }
+        ],
+        "moves": [
+          "wing attack",
+          "fire spin",
+          "flamethrower",
+          "dragon claw"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/charizard.png",
+          "back_default": "assets/pokemon/charizard_back.png"
+        }
+      },
+      {
+        "id": 7,
+        "name": "squirtle",
+        "base_experience": 63,
+        "types": [
+          { "slot": 1, "type": "water" }
+        ],
+        "stats": {
+          "hp": 44,
+          "attack": 48,
+          "defense": 65,
+          "special_attack": 50,
+          "special_defense": 64,
+          "speed": 43
+        },
+        "abilities": [
+          { "name": "torrent", "is_hidden": false },
+          { "name": "rain-dish", "is_hidden": true }
+        ],
+        "moves": [
+          "tackle",
+          "tail whip",
+          "water gun",
+          "bubble"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/squirtle.png",
+          "back_default": "assets/pokemon/squirtle_back.png"
+        }
+      },
+      {
+        "id": 8,
+        "name": "wartortle",
+        "base_experience": 142,
+        "types": [
+          { "slot": 1, "type": "water" }
+        ],
+        "stats": {
+          "hp": 59,
+          "attack": 63,
+          "defense": 80,
+          "special_attack": 65,
+          "special_defense": 80,
+          "speed": 58
+        },
+        "abilities": [
+          { "name": "torrent", "is_hidden": false },
+          { "name": "rain-dish", "is_hidden": true }
+        ],
+        "moves": [
+          "tackle",
+          "tail whip",
+          "water gun",
+          "bite"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/wartortle.png",
+          "back_default": "assets/pokemon/wartortle_back.png"
+        }
+      },
+      {
+        "id": 9,
+        "name": "blastoise",
+        "base_experience": 239,
+        "types": [
+          { "slot": 1, "type": "water" }
+        ],
+        "stats": {
+          "hp": 79,
+          "attack": 83,
+          "defense": 100,
+          "special_attack": 85,
+          "special_defense": 105,
+          "speed": 78
+        },
+        "abilities": [
+          { "name": "torrent", "is_hidden": false },
+          { "name": "rain-dish", "is_hidden": true }
+        ],
+        "moves": [
+          "tackle",
+          "bite",
+          "hydro pump",
+          "skull bash"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/blastoise.png",
+          "back_default": "assets/pokemon/blastoise_back.png"
+        }
+      },
+      {
+        "id": 10,
+        "name": "caterpie",
+        "base_experience": 39,
+        "types": [
+          { "slot": 1, "type": "bug" }
+        ],
+        "stats": {
+          "hp": 45,
+          "attack": 30,
+          "defense": 35,
+          "special_attack": 20,
+          "special_defense": 20,
+          "speed": 45
+        },
+        "abilities": [
+          { "name": "shield dust", "is_hidden": false },
+          { "name": "run-away", "is_hidden": true }
+        ],
+        "moves": [
+          "tackle",
+          "string shot"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/caterpie.png",
+          "back_default": "assets/pokemon/caterpie_back.png"
+        }
+      },
+      {
+        "id": 11,
+        "name": "metapod",
+        "base_experience": 72,
+        "types": [
+          { "slot": 1, "type": "bug" }
+        ],
+        "stats": {
+          "hp": 50,
+          "attack": 20,
+          "defense": 55,
+          "special_attack": 25,
+          "special_defense": 25,
+          "speed": 30
+        },
+        "abilities": [
+          { "name": "shed skin", "is_hidden": false }
+        ],
+        "moves": [
+          "harden"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/metapod.png",
+          "back_default": "assets/pokemon/metapod_back.png"
+        }
+      },
+      {
+        "id": 12,
+        "name": "butterfree",
+        "base_experience": 178,
+        "types": [
+          { "slot": 1, "type": "bug" },
+          { "slot": 2, "type": "flying" }
+        ],
+        "stats": {
+          "hp": 60,
+          "attack": 45,
+          "defense": 50,
+          "special_attack": 90,
+          "special_defense": 80,
+          "speed": 70
+        },
+        "abilities": [
+          { "name": "compound eyes", "is_hidden": false },
+          { "name": "tinted lens", "is_hidden": true }
+        ],
+        "moves": [
+          "gust",
+          "supersonic",
+          "wing attack",
+          "silver wind"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/butterfree.png",
+          "back_default": "assets/pokemon/butterfree_back.png"
+        }
+      },
+      {
+        "id": 13,
+        "name": "weedle",
+        "base_experience": 39,
+        "types": [
+          { "slot": 1, "type": "bug" },
+          { "slot": 2, "type": "poison" }
+        ],
+        "stats": {
+          "hp": 40,
+          "attack": 35,
+          "defense": 30,
+          "special_attack": 20,
+          "special_defense": 20,
+          "speed": 50
+        },
+        "abilities": [
+          { "name": "shield dust", "is_hidden": false },
+          { "name": "run-away", "is_hidden": true }
+        ],
+        "moves": [
+          "poison sting",
+          "string shot"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/weedle.png",
+          "back_default": "assets/pokemon/weedle_back.png"
+        }
+      },
+      {
+        "id": 14,
+        "name": "kakuna",
+        "base_experience": 72,
+        "types": [
+          { "slot": 1, "type": "bug" },
+          { "slot": 2, "type": "poison" }
+        ],
+        "stats": {
+          "hp": 45,
+          "attack": 25,
+          "defense": 50,
+          "special_attack": 25,
+          "special_defense": 25,
+          "speed": 35
+        },
+        "abilities": [
+          { "name": "shed skin", "is_hidden": false }
+        ],
+        "moves": [
+          "harden"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/kakuna.png",
+          "back_default": "assets/pokemon/kakuna_back.png"
+        }
+      },
+      {
+        "id": 15,
+        "name": "beedrill",
+        "base_experience": 178,
+        "types": [
+          { "slot": 1, "type": "bug" },
+          { "slot": 2, "type": "poison" }
+        ],
+        "stats": {
+          "hp": 65,
+          "attack": 90,
+          "defense": 40,
+          "special_attack": 45,
+          "special_defense": 80,
+          "speed": 75
+        },
+        "abilities": [
+          { "name": "swarm", "is_hidden": false },
+          { "name": "sniper", "is_hidden": true }
+        ],
+        "moves": [
+          "twineedle",
+          "fury attack",
+          "poison sting"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/beedrill.png",
+          "back_default": "assets/pokemon/beedrill_back.png"
+        }
+      },
+      {
+        "id": 16,
+        "name": "pidgey",
+        "base_experience": 50,
+        "types": [
+          { "slot": 1, "type": "normal" },
+          { "slot": 2, "type": "flying" }
+        ],
+        "stats": {
+          "hp": 40,
+          "attack": 45,
+          "defense": 40,
+          "special_attack": 35,
+          "special_defense": 35,
+          "speed": 56
+        },
+        "abilities": [
+          { "name": "keen eye", "is_hidden": false },
+          { "name": "tangled feet", "is_hidden": true }
+        ],
+        "moves": [
+          "tackle",
+          "gust",
+          "quick attack"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/pidgey.png",
+          "back_default": "assets/pokemon/pidgey_back.png"
+        }
+      },
+      {
+        "id": 17,
+        "name": "pidgeotto",
+        "base_experience": 122,
+        "types": [
+          { "slot": 1, "type": "normal" },
+          { "slot": 2, "type": "flying" }
+        ],
+        "stats": {
+          "hp": 63,
+          "attack": 60,
+          "defense": 55,
+          "special_attack": 50,
+          "special_defense": 50,
+          "speed": 71
+        },
+        "abilities": [
+          { "name": "keen eye", "is_hidden": false },
+          { "name": "tangled feet", "is_hidden": true }
+        ],
+        "moves": [
+          "wing attack",
+          "quick attack",
+          "gust"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/pidgeotto.png",
+          "back_default": "assets/pokemon/pidgeotto_back.png"
+        }
+      },
+      {
+        "id": 18,
+        "name": "pidgeot",
+        "base_experience": 216,
+        "types": [
+          { "slot": 1, "type": "normal" },
+          { "slot": 2, "type": "flying" }
+        ],
+        "stats": {
+          "hp": 83,
+          "attack": 80,
+          "defense": 75,
+          "special_attack": 70,
+          "special_defense": 70,
+          "speed": 101
+        },
+        "abilities": [
+          { "name": "keen eye", "is_hidden": false },
+          { "name": "tangled feet", "is_hidden": true }
+        ],
+        "moves": [
+          "wing attack",
+          "air slash"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/pidgeot.png",
+          "back_default": "assets/pokemon/pidgeot_back.png"
+        }
+      },
+      {
+        "id": 19,
+        "name": "pikachu",
+        "base_experience": 112,
+        "types": [
+          { "slot": 1, "type": "electric" }
+        ],
+        "stats": {
+          "hp": 35,
+          "attack": 55,
+          "defense": 40,
+          "special_attack": 50,
+          "special_defense": 50,
+          "speed": 90
+        },
+        "abilities": [
+          { "name": "static", "is_hidden": false },
+          { "name": "lightning rod", "is_hidden": true }
+        ],
+        "moves": [
+          "thunder shock",
+          "quick attack",
+          "electro ball"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/pikachu.png",
+          "back_default": "assets/pokemon/pikachu_back.png"
+        }
+      },
+      {
+        "id": 20,
+        "name": "raichu",
+        "base_experience": 218,
+        "types": [
+          { "slot": 1, "type": "electric" }
+        ],
+        "stats": {
+          "hp": 60,
+          "attack": 90,
+          "defense": 55,
+          "special_attack": 90,
+          "special_defense": 80,
+          "speed": 110
+        },
+        "abilities": [
+          { "name": "static", "is_hidden": false },
+          { "name": "lightning rod", "is_hidden": true }
+        ],
+        "moves": [
+          "thunderbolt",
+          "quick attack",
+          "electro ball"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/raichu.png",
+          "back_default": "assets/pokemon/raichu_back.png"
+        }
+      },
+      {
+        "id": 21,
+        "name": "sandshrew",
+        "base_experience": 60,
+        "types": [
+          { "slot": 1, "type": "ground" }
+        ],
+        "stats": {
+          "hp": 50,
+          "attack": 75,
+          "defense": 85,
+          "special_attack": 20,
+          "special_defense": 30,
+          "speed": 40
+        },
+        "abilities": [
+          { "name": "sand veil", "is_hidden": false },
+          { "name": "sand rush", "is_hidden": true }
+        ],
+        "moves": [
+          "scratch",
+          "sand attack",
+          "dig"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/sandshrew.png",
+          "back_default": "assets/pokemon/sandshrew_back.png"
+        }
+      },
+      {
+        "id": 22,
+        "name": "sandslash",
+        "base_experience": 158,
+        "types": [
+          { "slot": 1, "type": "ground" }
+        ],
+        "stats": {
+          "hp": 75,
+          "attack": 100,
+          "defense": 110,
+          "special_attack": 45,
+          "special_defense": 55,
+          "speed": 65
+        },
+        "abilities": [
+          { "name": "sand veil", "is_hidden": false },
+          { "name": "sand rush", "is_hidden": true }
+        ],
+        "moves": [
+          "slash",
+          "dig",
+          "earthquake"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/sandslash.png",
+          "back_default": "assets/pokemon/sandslash_back.png"
+        }
+      },
+      {
+        "id": 23,
+        "name": "vulpix",
+        "base_experience": 60,
+        "types": [
+          { "slot": 1, "type": "fire" }
+        ],
+        "stats": {
+          "hp": 38,
+          "attack": 41,
+          "defense": 40,
+          "special_attack": 50,
+          "special_defense": 65,
+          "speed": 65
+        },
+        "abilities": [
+          { "name": "flash fire", "is_hidden": false },
+          { "name": "drought", "is_hidden": true }
+        ],
+        "moves": [
+          "ember",
+          "quick attack",
+          "flame wheel"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/vulpix.png",
+          "back_default": "assets/pokemon/vulpix_back.png"
+        }
+      },
+      {
+        "id": 24,
+        "name": "ninetales",
+        "base_experience": 177,
+        "types": [
+          { "slot": 1, "type": "fire" }
+        ],
+        "stats": {
+          "hp": 73,
+          "attack": 76,
+          "defense": 75,
+          "special_attack": 81,
+          "special_defense": 100,
+          "speed": 100
+        },
+        "abilities": [
+          { "name": "flash fire", "is_hidden": false },
+          { "name": "drought", "is_hidden": true }
+        ],
+        "moves": [
+          "fire spin",
+          "quick attack",
+          "flamethrower"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/ninetales.png",
+          "back_default": "assets/pokemon/ninetales_back.png"
+        }
+      },
+      {
+        "id": 25,
+        "name": "jigglypuff",
+        "base_experience": 95,
+        "types": [
+          { "slot": 1, "type": "normal" },
+          { "slot": 2, "type": "fairy" }
+        ],
+        "stats": {
+          "hp": 115,
+          "attack": 45,
+          "defense": 20,
+          "special_attack": 45,
+          "special_defense": 25,
+          "speed": 20
+        },
+        "abilities": [
+          { "name": "cute charm", "is_hidden": false },
+          { "name": "competitive", "is_hidden": true }
+        ],
+        "moves": [
+          "sing",
+          "pound",
+          "rollout"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/jigglypuff.png",
+          "back_default": "assets/pokemon/jigglypuff_back.png"
+        }
+      },
+      {
+        "id": 26,
+        "name": "wigglytuff",
+        "base_experience": 196,
+        "types": [
+          { "slot": 1, "type": "normal" },
+          { "slot": 2, "type": "fairy" }
+        ],
+        "stats": {
+          "hp": 140,
+          "attack": 70,
+          "defense": 45,
+          "special_attack": 85,
+          "special_defense": 50,
+          "speed": 45
+        },
+        "abilities": [
+          { "name": "cute charm", "is_hidden": false },
+          { "name": "competitive", "is_hidden": true }
+        ],
+        "moves": [
+          "double-edge",
+          "body slam",
+          "rollout"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/wigglytuff.png",
+          "back_default": "assets/pokemon/wigglytuff_back.png"
+        }
+      },
+      {
+        "id": 27,
+        "name": "psyduck",
+        "base_experience": 80,
+        "types": [
+          { "slot": 1, "type": "water" }
+        ],
+        "stats": {
+          "hp": 50,
+          "attack": 52,
+          "defense": 48,
+          "special_attack": 65,
+          "special_defense": 50,
+          "speed": 55
+        },
+        "abilities": [
+          { "name": "damp", "is_hidden": false },
+          { "name": "cloud nine", "is_hidden": true }
+        ],
+        "moves": [
+          "scratch",
+          "water gun",
+          "confusion"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/psyduck.png",
+          "back_default": "assets/pokemon/psyduck_back.png"
+        }
+      },
+      {
+        "id": 28,
+        "name": "golduck",
+        "base_experience": 175,
+        "types": [
+          { "slot": 1, "type": "water" }
+        ],
+        "stats": {
+          "hp": 80,
+          "attack": 82,
+          "defense": 78,
+          "special_attack": 95,
+          "special_defense": 80,
+          "speed": 85
+        },
+        "abilities": [
+          { "name": "damp", "is_hidden": false },
+          { "name": "cloud nine", "is_hidden": true }
+        ],
+        "moves": [
+          "water gun",
+          "confusion",
+          "hydro pump"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/golduck.png",
+          "back_default": "assets/pokemon/golduck_back.png"
+        }
+      },
+      {
+        "id": 29,
+        "name": "machop",
+        "base_experience": 61,
+        "types": [
+          { "slot": 1, "type": "fighting" }
+        ],
+        "stats": {
+          "hp": 70,
+          "attack": 80,
+          "defense": 50,
+          "special_attack": 35,
+          "special_defense": 35,
+          "speed": 35
+        },
+        "abilities": [
+          { "name": "guts", "is_hidden": false },
+          { "name": "no guard", "is_hidden": true }
+        ],
+        "moves": [
+          "karate chop",
+          "low kick"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/machop.png",
+          "back_default": "assets/pokemon/machop_back.png"
+        }
+      },
+      {
+        "id": 30,
+        "name": "machoke",
+        "base_experience": 142,
+        "types": [
+          { "slot": 1, "type": "fighting" }
+        ],
+        "stats": {
+          "hp": 80,
+          "attack": 100,
+          "defense": 70,
+          "special_attack": 50,
+          "special_defense": 60,
+          "speed": 45
+        },
+        "abilities": [
+          { "name": "guts", "is_hidden": false },
+          { "name": "no guard", "is_hidden": true }
+        ],
+        "moves": [
+          "karate chop",
+          "low kick",
+          "seismic toss"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/machoke.png",
+          "back_default": "assets/pokemon/machoke_back.png"
+        }
+      },
+      {
+        "id": 31,
+        "name": "machamp",
+        "base_experience": 227,
+        "types": [
+          { "slot": 1, "type": "fighting" }
+        ],
+        "stats": {
+          "hp": 90,
+          "attack": 130,
+          "defense": 80,
+          "special_attack": 65,
+          "special_defense": 85,
+          "speed": 55
+        },
+        "abilities": [
+          { "name": "guts", "is_hidden": false },
+          { "name": "no guard", "is_hidden": true }
+        ],
+        "moves": [
+          "dynamic punch",
+          "karate chop",
+          "cross chop"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/machamp.png",
+          "back_default": "assets/pokemon/machamp_back.png"
+        }
+      },
+      {
+        "id": 32,
+        "name": "magnemite",
+        "base_experience": 65,
+        "types": [
+          { "slot": 1, "type": "electric" },
+          { "slot": 2, "type": "steel" }
+        ],
+        "stats": {
+          "hp": 25,
+          "attack": 35,
+          "defense": 70,
+          "special_attack": 95,
+          "special_defense": 55,
+          "speed": 45
+        },
+        "abilities": [
+          { "name": "magnet pull", "is_hidden": false },
+          { "name": "sturdy", "is_hidden": true }
+        ],
+        "moves": [
+          "thunder shock",
+          "spark"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/magnemite.png",
+          "back_default": "assets/pokemon/magnemite_back.png"
+        }
+      },
+      {
+        "id": 33,
+        "name": "magneton",
+        "base_experience": 163,
+        "types": [
+          { "slot": 1, "type": "electric" },
+          { "slot": 2, "type": "steel" }
+        ],
+        "stats": {
+          "hp": 50,
+          "attack": 60,
+          "defense": 95,
+          "special_attack": 120,
+          "special_defense": 70,
+          "speed": 70
+        },
+        "abilities": [
+          { "name": "magnet pull", "is_hidden": false },
+          { "name": "sturdy", "is_hidden": true }
+        ],
+        "moves": [
+          "thunder shock",
+          "spark",
+          "thunderbolt"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/magneton.png",
+          "back_default": "assets/pokemon/magneton_back.png"
+        }
+      },
+      {
+        "id": 34,
+        "name": "gastly",
+        "base_experience": 62,
+        "types": [
+          { "slot": 1, "type": "ghost" },
+          { "slot": 2, "type": "poison" }
+        ],
+        "stats": {
+          "hp": 30,
+          "attack": 35,
+          "defense": 30,
+          "special_attack": 100,
+          "special_defense": 35,
+          "speed": 80
+        },
+        "abilities": [
+          { "name": "levitate", "is_hidden": false }
+        ],
+        "moves": [
+          "lick",
+          "spite",
+          "confuse ray"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/gastly.png",
+          "back_default": "assets/pokemon/gastly_back.png"
+        }
+      },
+      {
+        "id": 35,
+        "name": "haunter",
+        "base_experience": 142,
+        "types": [
+          { "slot": 1, "type": "ghost" },
+          { "slot": 2, "type": "poison" }
+        ],
+        "stats": {
+          "hp": 45,
+          "attack": 50,
+          "defense": 45,
+          "special_attack": 115,
+          "special_defense": 55,
+          "speed": 95
+        },
+        "abilities": [
+          { "name": "levitate", "is_hidden": false }
+        ],
+        "moves": [
+          "lick",
+          "spite",
+          "hypnosis"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/haunter.png",
+          "back_default": "assets/pokemon/haunter_back.png"
+        }
+      },
+      {
+        "id": 36,
+        "name": "gengar",
+        "base_experience": 225,
+        "types": [
+          { "slot": 1, "type": "ghost" },
+          { "slot": 2, "type": "poison" }
+        ],
+        "stats": {
+          "hp": 60,
+          "attack": 65,
+          "defense": 60,
+          "special_attack": 130,
+          "special_defense": 75,
+          "speed": 110
+        },
+        "abilities": [
+          { "name": "cursed body", "is_hidden": false }
+        ],
+        "moves": [
+          "shadow ball",
+          "hypnosis",
+          "dream eater"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/gengar.png",
+          "back_default": "assets/pokemon/gengar_back.png"
+        }
+      },
+      {
+        "id": 37,
+        "name": "onix",
+        "base_experience": 77,
+        "types": [
+          { "slot": 1, "type": "rock" },
+          { "slot": 2, "type": "ground" }
+        ],
+        "stats": {
+          "hp": 35,
+          "attack": 45,
+          "defense": 160,
+          "special_attack": 30,
+          "special_defense": 45,
+          "speed": 70
+        },
+        "abilities": [
+          { "name": "rock head", "is_hidden": false },
+          { "name": "sturdy", "is_hidden": true }
+        ],
+        "moves": [
+          "tackle",
+          "rock throw",
+          "bind"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/onix.png",
+          "back_default": "assets/pokemon/onix_back.png"
+        }
+      },
+      {
+        "id": 38,
+        "name": "snorlax",
+        "base_experience": 189,
+        "types": [
+          { "slot": 1, "type": "normal" }
+        ],
+        "stats": {
+          "hp": 160,
+          "attack": 110,
+          "defense": 65,
+          "special_attack": 65,
+          "special_defense": 110,
+          "speed": 30
+        },
+        "abilities": [
+          { "name": "immunity", "is_hidden": false },
+          { "name": "thick fat", "is_hidden": true }
+        ],
+        "moves": [
+          "body slam",
+          "rest",
+          "snore"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/snorlax.png",
+          "back_default": "assets/pokemon/snorlax_back.png"
+        }
+      },
+      {
+        "id": 39,
+        "name": "articuno",
+        "base_experience": 261,
+        "types": [
+          { "slot": 1, "type": "ice" },
+          { "slot": 2, "type": "flying" }
+        ],
+        "stats": {
+          "hp": 90,
+          "attack": 85,
+          "defense": 85,
+          "special_attack": 125,
+          "special_defense": 100,
+          "speed": 95
+        },
+        "abilities": [
+          { "name": "pressure", "is_hidden": false },
+          { "name": "static", "is_hidden": true }
+        ],
+        "moves": [
+          "thunderbolt",
+          "drill peck",
+          "agility"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/articuno.png",
+          "back_default": "assets/pokemon/articuno_back.png"
+        }
+      },
+      {
+        "id": 40,
+        "name": "moltres",
+        "base_experience": 261,
+        "types": [
+          { "slot": 1, "type": "fire" },
+          { "slot": 2, "type": "flying" }
+        ],
+        "stats": {
+          "hp": 90,
+          "attack": 100,
+          "defense": 90,
+          "special_attack": 125,
+          "special_defense": 85,
+          "speed": 90
+        },
+        "abilities": [
+          { "name": "pressure", "is_hidden": false },
+          { "name": "flame body", "is_hidden": true }
+        ],
+        "moves": [
+          "flamethrower",
+          "wing attack",
+          "fire spin"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/moltres.png",
+          "back_default": "assets/pokemon/moltres_back.png"
+        }
+      },
+      {
+        "id": 41,
+        "name": "dratini",
+        "base_experience": 60,
+        "types": [
+          { "slot": 1, "type": "dragon" }
+        ],
+        "stats": {
+          "hp": 41,
+          "attack": 64,
+          "defense": 45,
+          "special_attack": 50,
+          "special_defense": 50,
+          "speed": 50
+        },
+        "abilities": [
+          { "name": "shed skin", "is_hidden": false },
+          { "name": "marvel scale", "is_hidden": true }
+        ],
+        "moves": [
+          "wrap",
+          "dragon rage"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/dratini.png",
+          "back_default": "assets/pokemon/dratini_back.png"
+        }
+      },
+      {
+        "id": 42,
+        "name": "dragonair",
+        "base_experience": 147,
+        "types": [
+          { "slot": 1, "type": "dragon" }
+        ],
+        "stats": {
+          "hp": 61,
+          "attack": 84,
+          "defense": 65,
+          "special_attack": 70,
+          "special_defense": 70,
+          "speed": 70
+        },
+        "abilities": [
+          { "name": "shed skin", "is_hidden": false },
+          { "name": "marvel scale", "is_hidden": true }
+        ],
+        "moves": [
+          "wrap",
+          "dragon breath",
+          "dragon rage"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/dragonair.png",
+          "back_default": "assets/pokemon/dragonair_back.png"
+        }
+      },
+      {
+        "id": 43,
+        "name": "dragonite",
+        "base_experience": 270,
+        "types": [
+          { "slot": 1, "type": "dragon" },
+          { "slot": 2, "type": "flying" }
+        ],
+        "stats": {
+          "hp": 91,
+          "attack": 134,
+          "defense": 95,
+          "special_attack": 100,
+          "special_defense": 100,
+          "speed": 80
+        },
+        "abilities": [
+          { "name": "inner focus", "is_hidden": false }
+        ],
+        "moves": [
+          "dragon rush",
+          "wing attack",
+          "hyper beam"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/dragonite.png",
+          "back_default": "assets/pokemon/dragonite_back.png"
+        }
+      },
+      {
+        "id": 44,
+        "name": "mewtwo",
+        "base_experience": 306,
+        "types": [
+          { "slot": 1, "type": "psychic" }
+        ],
+        "stats": {
+          "hp": 106,
+          "attack": 110,
+          "defense": 90,
+          "special_attack": 154,
+          "special_defense": 90,
+          "speed": 130
+        },
+        "abilities": [
+          { "name": "pressure", "is_hidden": false },
+          { "name": "unnerve", "is_hidden": true }
+        ],
+        "moves": [
+          "psystrike",
+          "psychic",
+          "shadow ball"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/mewtwo.png",
+          "back_default": "assets/pokemon/mewtwo_back.png"
+        }
+      },
+      {
+        "id": 45,
+        "name": "mew",
+        "base_experience": 270,
+        "types": [
+          { "slot": 1, "type": "psychic" }
+        ],
+        "stats": {
+          "hp": 100,
+          "attack": 100,
+          "defense": 100,
+          "special_attack": 100,
+          "special_defense": 100,
+          "speed": 100
+        },
+        "abilities": [
+          { "name": "synchronize", "is_hidden": false }
+        ],
+        "moves": [
+          "psychic",
+          "mega punch",
+          "ancient power"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/mew.png",
+          "back_default": "assets/pokemon/mew_back.png"
+        }
+      },
+      {
+        "id": 46,
+        "name": "houndour",
+        "base_experience": 66,
+        "types": [
+          { "slot": 1, "type": "dark" },
+          { "slot": 2, "type": "fire" }
+        ],
+        "stats": {
+          "hp": 45,
+          "attack": 60,
+          "defense": 30,
+          "special_attack": 80,
+          "special_defense": 50,
+          "speed": 65
+        },
+        "abilities": [
+          { "name": "early bird", "is_hidden": false },
+          { "name": "flash fire", "is_hidden": true }
+        ],
+        "moves": [
+          "bite",
+          "roar",
+          "fire fang"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/houndour.png",
+          "back_default": "assets/pokemon/houndour_back.png"
+        }
+      },
+      {
+        "id": 47,
+        "name": "houndoom",
+        "base_experience": 168,
+        "types": [
+          { "slot": 1, "type": "dark" },
+          { "slot": 2, "type": "fire" }
+        ],
+        "stats": {
+          "hp": 75,
+          "attack": 90,
+          "defense": 50,
+          "special_attack": 110,
+          "special_defense": 80,
+          "speed": 95
+        },
+        "abilities": [
+          { "name": "early bird", "is_hidden": false },
+          { "name": "flash fire", "is_hidden": true }
+        ],
+        "moves": [
+          "bite",
+          "roar",
+          "flamethrower"
+        ],
+        "sprites": {
+          "front_default": "assets/pokemon/houndoom.png",
+          "back_default": "assets/pokemon/houndoom_back.png"
+        }
+      }
+    ]
+  }
+  
