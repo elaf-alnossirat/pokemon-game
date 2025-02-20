@@ -2,7 +2,7 @@ import pygame
 import random
 import math
 from pokemon import Pokemon
-import sound_manager  # Pour jouer le son de sélection
+import sound_manager  # Pour le son de sélection
 
 class Battle:
     def __init__(self, available_pokemon, opponent_pokemon):
@@ -16,6 +16,7 @@ class Battle:
         self.battle_over = False
         self.victor = None
         self.result_displayed = False
+        # Animation variables for modern result screen
         self.animation_progress = 0
         self.animation_speed = 0.02
         self.particles = []
@@ -336,6 +337,10 @@ class Battle:
         pygame.init()
         screen = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Pokémon Battle")
+        # Lancement de la musique de combat en boucle (-1 pour infini)
+        pygame.mixer.music.load("assets/sounds/Combat.mp3")
+        pygame.mixer.music.play(-1)
+        
         background_image = pygame.image.load("assets/background/battle_background.jpg")
         font = pygame.font.Font(None, 36)
         clock = pygame.time.Clock()
@@ -399,6 +404,8 @@ class Battle:
 
             if not self.player_turn and not self.battle_over:
                 self.opponent_turn(screen)
-
+        
+        # Arrêt de la musique de combat à la fin du combat
+        pygame.mixer.music.stop()
         pygame.display.set_caption("Pokémon Game")
         return

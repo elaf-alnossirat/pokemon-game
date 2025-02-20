@@ -1,6 +1,6 @@
 import pygame
 import sys
-import sound_manager  # Import du gestionnaire de son
+import sound_manager  # Si vous souhaitez également jouer des sons lors des clics
 
 class MainMenu:
     def __init__(self):
@@ -27,6 +27,10 @@ class MainMenu:
         pygame.display.set_caption("Pokémon Game - Main Menu")
         clock = pygame.time.Clock()
 
+        # Lancer la musique de fond du menu principal en boucle
+        pygame.mixer.music.load("assets\sounds/Main_Menu.mp3")
+        pygame.mixer.music.play(-1)
+
         background_image = pygame.image.load("assets/main_menu_background.jpg")
 
         # Positions et tailles des boutons
@@ -39,7 +43,6 @@ class MainMenu:
             screen.blit(background_image, (0, 0))
             mouse_x, mouse_y = pygame.mouse.get_pos()
 
-            # Vérification du survol de chaque bouton
             start_hovered = start_button_x <= mouse_x <= start_button_x + button_width and \
                             start_button_y <= mouse_y <= start_button_y + button_height
             pokedex_hovered = pokedex_button_x <= mouse_x <= pokedex_button_x + button_width and \
@@ -47,7 +50,6 @@ class MainMenu:
             quit_hovered = quit_button_x <= mouse_x <= quit_button_x + button_width and \
                            quit_button_y <= mouse_y <= quit_button_y + button_height
 
-            # Affichage des boutons
             self.draw_button(screen, start_button_x, start_button_y, button_width, button_height, "Start", start_hovered)
             self.draw_button(screen, pokedex_button_x, pokedex_button_y, button_width, button_height, "Pokedex", pokedex_hovered)
             self.draw_button(screen, quit_button_x, quit_button_y, button_width, button_height, "Quit", quit_hovered)
@@ -57,15 +59,17 @@ class MainMenu:
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    pygame.mixer.music.stop()
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if start_hovered:
-                        sound_manager.play_select_sound()
+                        # Optionnel : jouer le son de sélection via sound_manager.play_select_sound()
+                        pygame.mixer.music.stop()
                         return "start"
                     if pokedex_hovered:
-                        sound_manager.play_select_sound()
+                        pygame.mixer.music.stop()
                         return "pokedex"
                     if quit_hovered:
-                        sound_manager.play_select_sound()
+                        pygame.mixer.music.stop()
                         return "quit"
