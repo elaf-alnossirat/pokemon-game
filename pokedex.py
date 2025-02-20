@@ -2,6 +2,7 @@ import pygame
 import json
 import math
 from pokemon import Pokemon
+import sound_manager  # Import pour jouer le son de sélection
 
 def load_pokemons(filepath):
     """Charge le JSON et crée une liste de Pokémon."""
@@ -27,7 +28,7 @@ def main():
     pygame.display.set_caption("Pokedex - Liste et stats")
     clock = pygame.time.Clock()
 
-    # Chargement de l'image de fond "pokedex_background.jpg"
+    # Chargement de l'image de fond "pokedex.background.jpg"
     try:
         background = pygame.image.load("assets/pokedex_background.jpg").convert()
         background = pygame.transform.scale(background, (800, 600))
@@ -35,7 +36,6 @@ def main():
         print("Erreur de chargement de l'image de fond:", e)
         background = None
 
-    # On charge tous les Pokémon
     pokemons = load_pokemons("pokemons.json")
     font = pygame.font.SysFont("arial", 20)
 
@@ -56,37 +56,47 @@ def main():
 
     running = True
     while running:
-        clock.tick(60)  # dt en millisecondes
+        dt = clock.tick(60)  # dt en millisecondes
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
             elif event.type == pygame.KEYDOWN:
-                # Retour au menu principal si la touche Échap est pressée
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-                elif event.key == pygame.K_UP:
+                if event.key == pygame.K_UP:
                     selected_index = max(0, selected_index - 1)
                 elif event.key == pygame.K_DOWN:
                     selected_index = min(len(pokemons) - 1, selected_index + 1)
-                # Recalcul du target_offset pour centrer le Pokémon sélectionné
+
+                # Calcul du target_offset pour centrer l'élément sélectionné
                 target_offset = selected_index * spacing - window_height // 2
                 target_offset = max(0, min(target_offset, max_scroll))
 
             elif event.type == pygame.MOUSEWHEEL:
-                target_offset -= event.y * 40  # 40 = pas de défilement
+                target_offset -= event.y * 40  # pas de défilement
                 target_offset = max(0, min(target_offset, max_scroll))
+            
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                # On considère que la liste des Pokémon est dans la partie gauche (x < 200)
+                if mouse_x < 200:
+                    for i, p in enumerate(pokemons):
+                        item_y = 20 - scroll_offset + i * spacing
+                        # Zone de clic approximative : le sprite est affiché entre x=20 et x=120, et sur une hauteur de 64 pixels
+                        if 20 <= mouse_x <= 120 and item_y <= mouse_y <= item_y + 64:
+                            if i != selected_index:
+                                selected_index = i
+                                sound_manager.play_select_sound()
+                            break
 
-        # Slide fluide vers le target_offset
+        # Animation fluide du scroll
         scroll_offset += (target_offset - scroll_offset) * 0.2
 
-        # Affichage de l'image de fond
         if background:
             screen.blit(background, (0, 0))
         else:
             screen.fill((0, 0, 0))
 
-        # 1) Affichage de la liste des Pokémon à gauche
+        # Affichage de la liste des Pokémon à gauche
         y = 20 - scroll_offset
         list_x = 0
         for i, p in enumerate(pokemons):
@@ -95,13 +105,13 @@ def main():
             if sprite is not None:
                 sprite = pygame.transform.scale(sprite, (64, 64))
                 screen.blit(sprite, (list_x + 20, y))
-            # Les noms sont en jaune si sélectionnés, sinon en noir
+            # Le nom du Pokémon s'affiche en jaune s'il est sélectionné, sinon en noir
             color = (255, 255, 0) if i == selected_index else (0, 0, 0)
             text_surface = font.render(p.name.capitalize(), True, color)
             screen.blit(text_surface, (list_x + 100, y + 20))
             y += spacing
 
-        # 2) Affichage des détails du Pokémon sélectionné à droite
+        # Affichage des détails du Pokémon sélectionné à droite
         details_x = 320
         current_pokemon = pokemons[selected_index]
         if current_pokemon.front_image:
