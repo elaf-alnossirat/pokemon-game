@@ -27,7 +27,7 @@ def main():
     pygame.display.set_caption("Pokedex - Liste et stats")
     clock = pygame.time.Clock()
 
-    # Chargement de l'image de fond "pokedex.background.jpg"
+    # Chargement de l'image de fond "pokedex_background.jpg"
     try:
         background = pygame.image.load("assets/pokedex_background.jpg").convert()
         background = pygame.transform.scale(background, (800, 600))
@@ -53,22 +53,23 @@ def main():
     # Offset de défilement actuel (pour le slide) et cible
     scroll_offset = 0.0
     target_offset = 0.0
-    scroll_speed = 1.0
 
     running = True
     while running:
-        dt = clock.tick(60)  # dt en millisecondes
+        clock.tick(60)  # dt en millisecondes
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
+                # Retour au menu principal si la touche Échap est pressée
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+                elif event.key == pygame.K_UP:
                     selected_index = max(0, selected_index - 1)
                 elif event.key == pygame.K_DOWN:
                     selected_index = min(len(pokemons) - 1, selected_index + 1)
-
-                # Calcul du target_offset pour centrer l'élément sélectionné
+                # Recalcul du target_offset pour centrer le Pokémon sélectionné
                 target_offset = selected_index * spacing - window_height // 2
                 target_offset = max(0, min(target_offset, max_scroll))
 
@@ -114,7 +115,7 @@ def main():
         for stat_name, stat_value in current_pokemon.stats.items():
             info_lines.append(f"  {stat_name.upper()}: {stat_value}")
         moves_preview = ", ".join(current_pokemon.moves[:5])
-        info_lines.append(f"Moves: {moves_preview} {'...' if len(current_pokemon.moves)>5 else ''}")
+        info_lines.append(f"Moves: {moves_preview} {'...' if len(current_pokemon.moves) > 5 else ''}")
 
         line_y = 220
         for line in info_lines:
