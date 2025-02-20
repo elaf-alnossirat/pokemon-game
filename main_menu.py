@@ -1,4 +1,5 @@
 import pygame
+import sys
 
 class MainMenu:
     def __init__(self):
@@ -23,6 +24,7 @@ class MainMenu:
     def show(self):
         pygame.init()
         screen = pygame.display.set_mode((800, 600))
+        pygame.display.set_caption("Pokémon Game - Main Menu")
         clock = pygame.time.Clock()
 
         # Load background image
@@ -58,15 +60,12 @@ class MainMenu:
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running = False
-                    return None
+                    pygame.quit()
+                    sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if start_hovered:
-                        self.running = False
                         return "start"
                     if pokedex_hovered:
-                        self.running = False
                         return "pokedex"
                     if quit_hovered:
-                        self.running = False
                         return "quit"

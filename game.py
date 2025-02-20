@@ -87,22 +87,43 @@ class Game:
     def start_battle(self):
         if not self.selected_pokemon:
             self.choose_pokemon()
-        opponent_pokemon = random.choice(self.pokemons)
+        
+        # Choose a random opponent
+        opponent_pokemon = random.choice([p for p in self.pokemons if p != self.selected_pokemon])
+        
+        # Create and start battle
         battle = Battle(available_pokemon=[self.selected_pokemon], opponent_pokemon=opponent_pokemon)
         battle.start_battle()
+        
+        # Important: DON'T quit the display - just reinitialize the screen with the correct settings
+        screen = pygame.display.set_mode((800, 600))
+        pygame.display.set_caption("Pokémon Game")
+        
+        # No need to restart the run method - just return to it
+        # The black screen happens because we're recursively calling run()
+        return
 
     def show_pokedex(self):
         show_pokedex()  # Call the Pokédex screen function
+        # Ensure pygame display is properly reset for the main menu
+        pygame.display.set_mode((800, 600))
+        pygame.display.set_caption("Pokémon Game")
 
     def run(self):
-        while True:
+        running = True
+        while running:
             selected_option = self.main_menu.show()
 
             if selected_option == "start":
                 self.start_battle()
+                # Reset the main menu for next use
+                self.main_menu = MainMenu()
             elif selected_option == "pokedex":
                 self.show_pokedex()
+                # Reset the main menu for next use
+                self.main_menu = MainMenu()
             elif selected_option == "quit":
+                running = False
                 pygame.quit()
                 sys.exit()
 

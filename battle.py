@@ -20,20 +20,6 @@ class Battle:
         self.animation_speed = 0.02
         self.particles = []
 
-    # def draw_neon_button(self, screen, x, y, width, height, text, font, is_hovered=False):
-    #     neon_color = (0, 255, 0)  # Neon Green for the button
-    #     neon_hover_color = (0, 255, 255)  # Neon Blue when hovered
-    #     glow_color = (0, 255, 255)  # Glow color on hover
-
-    #     if is_hovered:
-    #         pygame.draw.rect(screen, glow_color, (x - 5, y - 5, width + 10, height + 10), border_radius=20)  # Glow effect
-    #     pygame.draw.rect(screen, neon_hover_color if is_hovered else neon_color, 
-    #                      (x, y, width, height), border_radius=20)
-
-    #     text_surface = font.render(text, True, (0, 0, 0))
-    #     text_rect = text_surface.get_rect(center=(x + width // 2, y + height // 2))
-    #     screen.blit(text_surface, text_rect)
-
     def display_moves(self, screen):
         # Modern UI font - try to load custom font with fallback
         try:
@@ -413,11 +399,14 @@ class Battle:
             pygame.display.flip()
             clock.tick(60)
         
+        # Set running to False to exit the battle loop
+        self.running = False
         return
 
     def start_battle(self):
         pygame.init()
         screen = pygame.display.set_mode((800, 600))
+        pygame.display.set_caption("Pokémon Battle")
         background_image = pygame.image.load("assets/background/battle_background.jpg")
         font = pygame.font.Font(None, 36)
         clock = pygame.time.Clock()
@@ -434,27 +423,24 @@ class Battle:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if not self.battle_over and self.player_turn:
                         mouse_x, mouse_y = pygame.mouse.get_pos()
-                        # Updated button coordinates to match the new smaller layout
-                        move_area_rect = pygame.Rect(50, 470, 700, 100)
-                        button_width = 240
-                        button_height = 40
-                        button_spacing = 30
-                        buttons_start_y = move_area_rect.y + 30
-                        
-                        # Calculate center offset like in display_moves
-                        total_width = (button_width * 2) + button_spacing
-                        start_x = move_area_rect.x + (move_area_rect.width - total_width) // 2
+                        # Updated button coordinates to match the new layout
+                        move_area_rect = pygame.Rect(50, 450, 700, 120)
+                        buttons_start_y = move_area_rect.y + 35
+                        button_width = 320
+                        button_height = 60
+                        button_spacing = 20
                         
                         for index, move in enumerate(self.player_pokemon.moves):
-                            button_x = start_x + (index % 2) * (button_width + button_spacing)
-                            button_y = buttons_start_y + (index // 2) * (button_height + 10)
+                            button_x = move_area_rect.x + 20 + (index % 2) * (button_width + button_spacing)
+                            button_y = buttons_start_y + (index // 2) * (button_height + 5)
                             
                             if button_x <= mouse_x <= button_x + button_width and button_y <= mouse_y <= button_y + button_height:
                                 self.handle_attack(screen, move)
                     elif self.battle_over and self.result_displayed:
+                        # Here we properly exit the battle
                         self.running = False
 
-            # Rest of the battle loop code remains the same
+            # Draw the game screen
             screen.blit(background_image, (0, 0))
 
             player_pokemon_image = pygame.image.load(f"assets/pokemon/{self.player_pokemon.name.lower()}.png")
@@ -469,11 +455,11 @@ class Battle:
             self.opponent_pokemon.draw_hp_bar(screen, x=500, y=50)
 
             # Message box (moved up to make room for the move buttons)
-            message_box = pygame.Rect(50, 420, 700, 40)  # Moved up slightly
-            pygame.draw.rect(screen, (0, 0, 0, 150), message_box, border_radius=10)
-            pygame.draw.rect(screen, (100, 100, 255), message_box, width=2, border_radius=10)
+            message_box = pygame.Rect(50, 400, 700, 40)
+            pygame.draw.rect(screen, (0, 0, 0, 150), message_box, border_radius=10)  # Semi-transparent background
+            pygame.draw.rect(screen, (100, 100, 255), message_box, width=2, border_radius=10)  # Neon border
             message_text = font.render(self.message, True, (255, 255, 255))
-            screen.blit(message_text, (60, 430))
+            screen.blit(message_text, (60, 410))
 
             # Only display moves if battle is ongoing
             if not self.battle_over:
@@ -484,8 +470,14 @@ class Battle:
 
             # Display the result screen if battle is over and result hasn't been shown yet
             if self.battle_over and not self.result_displayed:
+                # Wait a moment to show the final message before showing result screen
                 pygame.time.delay(1500)
                 self.display_modern_result_screen(screen)
 
             if not self.player_turn and not self.battle_over:
                 self.opponent_turn(screen)
+
+        # Clean up properly before returning
+        # These lines ensure the display is properly reset for the main menu
+        pygame.display.set_caption("Pokémon Game")
+        return
