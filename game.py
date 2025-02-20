@@ -85,8 +85,11 @@ class Game:
                         self.scroll_offset = min(max_scroll, self.scroll_offset + 40)
 
     def start_battle(self):
-        if not self.selected_pokemon:
-            self.choose_pokemon()
+        # Reset the selected Pokemon to force selection for each new battle
+        self.selected_pokemon = None
+        
+        # Now choose a Pokemon (this will always prompt for selection)
+        self.choose_pokemon()
         
         # Choose a random opponent
         opponent_pokemon = random.choice([p for p in self.pokemons if p != self.selected_pokemon])
@@ -99,8 +102,6 @@ class Game:
         screen = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Pokémon Game")
         
-        # No need to restart the run method - just return to it
-        # The black screen happens because we're recursively calling run()
         return
 
     def show_pokedex(self):
