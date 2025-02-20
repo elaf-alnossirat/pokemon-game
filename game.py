@@ -4,7 +4,8 @@ import sys
 from pokemon import Pokemon
 from battle import Battle
 from main_menu import MainMenu
-from pokedex import main as show_pokedex  # Import the Pokédex function
+from pokedex import main as show_pokedex  # Fonction pour afficher le Pokédex
+import sound_manager  # Import du gestionnaire de son
 
 class Game:
     def __init__(self):
@@ -14,7 +15,6 @@ class Game:
         self.scroll_offset = 0
 
     def load_pokemons(self, filepath):
-        """Load Pokémon data from a JSON file."""
         import json
         with open(filepath) as file:
             data = json.load(file)
@@ -31,7 +31,6 @@ class Game:
                 moves=p["moves"],
                 sprites=p["sprites"]
             ))
-
         return pokemons
 
     def choose_pokemon(self):
@@ -43,7 +42,7 @@ class Game:
 
         spacing_x, spacing_y = 200, 180
         start_x, start_y = 50, 50
-        rows, cols = 3, 3  # Grid layout
+        rows, cols = 3, 3
         max_scroll = max(0, (len(self.pokemons) // cols) * spacing_y - 600)
 
         running = True
@@ -55,7 +54,7 @@ class Game:
                 x = start_x + col * spacing_x
                 y = start_y + row * spacing_y - self.scroll_offset
 
-                if 0 <= y <= 600:  # Only draw if visible
+                if 0 <= y <= 600:
                     sprite = pygame.image.load(pokemon.sprites["front_default"])
                     sprite = pygame.transform.scale(sprite, (100, 100))
                     screen.blit(sprite, (x, y))
@@ -76,6 +75,7 @@ class Game:
                         x = start_x + col * spacing_x
                         y = start_y + row * spacing_y - self.scroll_offset
                         if x <= mouse_x <= x + 100 and y <= mouse_y <= y + 100:
+                            sound_manager.play_select_sound()
                             self.selected_pokemon = pokemon
                             running = False
                 if event.type == pygame.KEYDOWN:
@@ -85,28 +85,18 @@ class Game:
                         self.scroll_offset = min(max_scroll, self.scroll_offset + 40)
 
     def start_battle(self):
-        # Reset the selected Pokemon to force selection for each new battle
         self.selected_pokemon = None
-        
-        # Now choose a Pokemon (this will always prompt for selection)
         self.choose_pokemon()
-        
-        # Choose a random opponent
         opponent_pokemon = random.choice([p for p in self.pokemons if p != self.selected_pokemon])
-        
-        # Create and start battle
         battle = Battle(available_pokemon=[self.selected_pokemon], opponent_pokemon=opponent_pokemon)
         battle.start_battle()
         
-        # Important: DON'T quit the display - just reinitialize the screen with the correct settings
         screen = pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Pokémon Game")
-        
         return
 
     def show_pokedex(self):
-        show_pokedex()  # Call the Pokédex screen function
-        # Ensure pygame display is properly reset for the main menu
+        show_pokedex()
         pygame.display.set_mode((800, 600))
         pygame.display.set_caption("Pokémon Game")
 
@@ -114,14 +104,11 @@ class Game:
         running = True
         while running:
             selected_option = self.main_menu.show()
-
             if selected_option == "start":
                 self.start_battle()
-                # Reset the main menu for next use
                 self.main_menu = MainMenu()
             elif selected_option == "pokedex":
                 self.show_pokedex()
-                # Reset the main menu for next use
                 self.main_menu = MainMenu()
             elif selected_option == "quit":
                 running = False
